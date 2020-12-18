@@ -10,6 +10,15 @@ namespace _66bitProject.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
+
+        public DbSet<EmployeeCost> EmployeeCosts { get; set; }
+        public DbSet<EmployeeRevenue> EmployeeRevenues { get; set; }
+        public DbSet<Overwork> Overworks { get; set; }
+
+
+
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -23,7 +32,7 @@ namespace _66bitProject.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Project_test;Username=postgres;Password=AV563iKLZS");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Project_test;Username=postgres;Password=root");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

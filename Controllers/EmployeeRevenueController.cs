@@ -9,10 +9,10 @@ using _66bitProject.Data;
 
 namespace _66bitProject.Controllers
 {
-    public class EmployeeCostController : Controller
+    public class EmployeeRevenueController : Controller
     {
         private ApplicationDbContext db;
-        public EmployeeCostController (ApplicationDbContext context)
+        public EmployeeRevenueController(ApplicationDbContext context)
         {
             db = context;
         }
@@ -24,9 +24,9 @@ namespace _66bitProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EmployeeCost cost)
+        public async Task<IActionResult> Create(EmployeeRevenue revenue)
         {
-            db.EmployeeCosts.Add(cost);
+            db.EmployeeRevenues.Add(revenue);
             await db.SaveChangesAsync();
             return View();
         }

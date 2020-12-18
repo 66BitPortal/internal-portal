@@ -9,12 +9,16 @@ namespace _66bitProject.Models
 {
     public class EmployeeRevenue
     {
-        [ForeignKey("EmployeeId")]
-        public User Employee { get; set; }
-        public int EmployeeId { get; set; }
+        [ForeignKey("PersonId")]
+        public User Person { get; set; }
+        public int PersonId { get; set; }
         [Key]
         public int RevenueId { get; set; }
-        public int Amount { get; set; }
-        public int PaymentFrequency { get; set; }
+
+        public string Category { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Value { get; set; }
+        public DateTime date { get; set; }
     }
 }

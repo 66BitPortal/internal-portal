@@ -9,10 +9,10 @@ using _66bitProject.Data;
 
 namespace _66bitProject.Controllers
 {
-    public class EmployeeCostController : Controller
+    public class OverworkController : Controller
     {
         private ApplicationDbContext db;
-        public EmployeeCostController (ApplicationDbContext context)
+        public OverworkController(ApplicationDbContext context)
         {
             db = context;
         }
@@ -24,9 +24,9 @@ namespace _66bitProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EmployeeCost cost)
+        public async Task<IActionResult> Create(Overwork overwork)
         {
-            db.EmployeeCosts.Add(cost);
+            db.Overworks.Add(overwork);
             await db.SaveChangesAsync();
             return View();
         }
