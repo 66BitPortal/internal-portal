@@ -21,7 +21,14 @@ namespace _66bitProject.Areas.Identity
                     options.UseNpgsql(
                         context.Configuration.GetConnectionString("DefaultConnection")));
 
-                services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddIdentity<User, IdentityRole<int>>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 5;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             });
         }

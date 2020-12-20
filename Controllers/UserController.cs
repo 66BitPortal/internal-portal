@@ -41,11 +41,11 @@ namespace _66bitProject.Controllers
                 var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    //Redirect
+                    return Redirect("Index");
                 }
                 else
                 {
-                    //throw some kind of Exception or Redirect?
+                    //Return error?
                 }
             }
 
@@ -68,18 +68,18 @@ namespace _66bitProject.Controllers
                     user.BirthDate = model.BirthDate;
                     user.Position = model.Position;
                     user.Department = model.Department;
-                    user.Revenue = new EmployeeRevenue { Amount = model.RevAmount, PaymentFrequency = model.PaymentFrequency, Employee = user };
+                    user.Revenue = new EmployeeRevenue { Value = model.RevAmount, Person = user };
 
                     var result = await userManager.UpdateAsync(user);
 
                     if (result.Succeeded)
                     {
-                        //return some kind of success note?
+                        //Redirect to create page with success status?
                     }
                 }
                 else
                 {
-                    //Is this possible in our situation?
+                    return NotFound();
                 }
             }
             return View(model);
@@ -104,7 +104,6 @@ namespace _66bitProject.Controllers
                 };
                 return View(model);
             }
-            //Is it even possible to not find user in our situation?
             return NotFound();
         }
 
