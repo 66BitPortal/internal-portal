@@ -9,5 +9,7 @@ namespace _66bitProject.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        //Возможно не нужно?
+        public ICollection<Overwork> Overworks { get; set; }
     }
 }

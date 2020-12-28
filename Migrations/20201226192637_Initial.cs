@@ -9,54 +9,6 @@ namespace _66bitProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Department",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Adress = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Department", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeeCosts",
-                columns: table => new
-                {
-                    CostId = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EmployeeId = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Confirmation = table.Column<string>(nullable: true),
-                    Value = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeCosts", x => x.CostId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Overworks",
-                columns: table => new
-                {
-                    OverworkID = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PersonID = table.Column<int>(nullable: false),
-                    ProjectID = table.Column<int>(nullable: false),
-                    HoursCount = table.Column<int>(nullable: false),
-                    Status = table.Column<bool>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Overworks", x => x.OverworkID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -76,22 +28,15 @@ namespace _66bitProject.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    MiddleName = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
                     BirthDate = table.Column<DateTime>(nullable: false),
-                    Position = table.Column<string>(nullable: true),
-                    DepartmentId = table.Column<string>(nullable: true)
+                    HourPayment = table.Column<int>(nullable: false),
+                    PaymentDay = table.Column<DateTime>(nullable: false),
+                    NumberOfPayments = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Department_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Department",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,6 +130,30 @@ namespace _66bitProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployeeCosts",
+                columns: table => new
+                {
+                    CostId = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EmployeeId = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Confirmation = table.Column<string>(nullable: true),
+                    Value = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeCosts", x => x.CostId);
+                    table.ForeignKey(
+                        name: "FK_EmployeeCosts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeRevenues",
                 columns: table => new
                 {
@@ -195,7 +164,7 @@ namespace _66bitProject.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Value = table.Column<int>(nullable: false),
-                    date = table.Column<DateTime>(nullable: false)
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,6 +175,31 @@ namespace _66bitProject.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Overworks",
+                columns: table => new
+                {
+                    OverworkID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PersonID = table.Column<int>(nullable: false),
+                    ProjectID = table.Column<int>(nullable: false),
+                    HoursCount = table.Column<int>(nullable: false),
+                    Status = table.Column<bool>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Overworks", x => x.OverworkID);
+                    table.ForeignKey(
+                        name: "FK_Overworks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -290,15 +284,19 @@ namespace _66bitProject.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeRevenues_PersonId",
-                table: "EmployeeRevenues",
-                column: "PersonId",
-                unique: true);
+                name: "IX_EmployeeCosts_UserId",
+                table: "EmployeeCosts",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_DepartmentId",
-                table: "Users",
-                column: "DepartmentId");
+                name: "IX_EmployeeRevenues_PersonId",
+                table: "EmployeeRevenues",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Overworks_UserId",
+                table: "Overworks",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -343,9 +341,6 @@ namespace _66bitProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Department");
         }
     }
 }

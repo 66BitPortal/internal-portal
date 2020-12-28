@@ -11,26 +11,25 @@ namespace _66bitProject.Models
     {
         #region Поля профиля
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string MiddleName { get; set; }
+        public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
-        public string Position { get; set; }
-        [ForeignKey("DepartmentId")]
-        public Department Department { get; set; }
-        public EmployeeRevenue Revenue { get; set; }
-        public string DepartmentId { get; set; }
+        public int HourPayment { get; set; }
+        public DateTime PaymentDay { get; set; }
+        public int NumberOfPayments { get; set; }
+        public ICollection<EmployeeRevenue> Revenues { get; set; }
+        public ICollection<Overwork> Overworks { get; set; }
+        public ICollection<EmployeeCost> Costs { get; set; }
 
         #endregion
 
         /// <summary>
         /// Список ролей пользователя
         /// </summary>
-        public virtual ICollection<IdentityRole<int>> Roles { get; set; } = new List<IdentityRole<int>>();
+        public virtual ICollection<IdentityRole<int>> Roles { get; set; }
 
         /// <summary>
         /// Список разрешений пользователя
         /// </summary>
-        public virtual ICollection<IdentityUserClaim<int>> UserClaims { get; set; } = new List<IdentityUserClaim<int>>();
+        public virtual ICollection<IdentityUserClaim<int>> UserClaims { get; set; }
     }
 }

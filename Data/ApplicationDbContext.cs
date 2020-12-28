@@ -19,7 +19,6 @@ namespace _66bitProject.Data
             : base(options)
         {
             Config = configuration;
-            Database.EnsureCreated();
         }
 
         public IConfiguration Config;

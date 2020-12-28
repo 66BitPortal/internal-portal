@@ -4,42 +4,57 @@ using System.Linq;
 using System.Threading.Tasks;
 using _66bitProject.Models;
 using _66bitProject.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace _66bitProject.Controllers
 {
     public class UserController : Controller
     {
         UserManager<User> userManager;
+        RoleManager<IdentityRole<int>> roleManager;
 
-        public UserController(UserManager<User> userManager)
+        public UserController(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
+
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
-            return View();
+            return View(userManager.Users.ToList());
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserViewModel model)
+        public async Task<IActionResult> Create(CreateUserViewModel model, string role)
         {
             if (ModelState.IsValid)
             {
                 User user = new User
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    MiddleName = model.MiddleName,
+                    FullName = model.FullName,
                     BirthDate = model.BirthDate,
-                    Position = model.Position,
-                    Department = model.Department
-                };
-
-                var result = await userManager.CreateAsync(user);
-                if (result.Succeeded)
+                    HourPayment = model.HourPayment,
+                    PaymentDay = model.PaymentDate,
+                    NumberOfPayments = model.PaymentFrequency,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    UserName = model.Email
+            };
+                //Для пароля нужно написать верификатор, пока что для тестов сделал так
+                if (String.IsNullOrEmpty(model.Password))
+                {
+                    //Здесь нужно выдавать оповещение об ошибке, пока что заглушка
+                    return NotFound();
+                }
+                var result = await userManager.CreateAsync(user, model.Password);
+                var roleResult = await userManager.AddToRoleAsync(user, role);
+                if (result.Succeeded && roleResult.Succeeded)
                 {
                     return Redirect("Index");
                 }
@@ -52,29 +67,48 @@ namespace _66bitProject.Controllers
             return View(model);
         }
 
-        public IActionResult Create() => View();
+        [Authorize(Roles = "admin")]
+        public IActionResult Create()
+        {
+            var model = new CreateUserViewModel();
+            model.AllRoles = roleManager.Roles.ToList();
+            return View(model);
+        }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> Edit(EditUserViewModel model)
+        public async Task<IActionResult> Edit(EditUserViewModel model, string role)
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(model.Id);
+                User user = await userManager.Users.SingleAsync(u => u.Id == model.Id);
                 if (user != null)
                 {
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.MiddleName = model.MiddleName;
+                    user.FullName = model.FullName;
                     user.BirthDate = model.BirthDate;
-                    user.Position = model.Position;
-                    user.Department = model.Department;
-                    user.Revenue = new EmployeeRevenue { Value = model.RevAmount, Person = user };
-
+                    user.HourPayment = model.HourPayment;
+                    user.Email = model.Email;
+                    user.NumberOfPayments = model.PaymentFrequency;
+                    user.PaymentDay = model.PaymentDate;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.UserName = model.Email;
+                    var oldRoles = await userManager.GetRolesAsync(user);
+                    //Защита от снятия админом роли с самого себя, плохой код, но идей пока нет
+                    if (!oldRoles.Contains("admin") && (role != "admin"))
+                    {
+                        await userManager.RemoveFromRolesAsync(user, oldRoles);
+                        await userManager.AddToRoleAsync(user, role);
+                    }
+                    if (!String.IsNullOrEmpty(model.NewPassword))
+                    {
+                        await userManager.RemovePasswordAsync(user);
+                        await userManager.AddPasswordAsync(user, model.NewPassword);
+                    }
                     var result = await userManager.UpdateAsync(user);
-
                     if (result.Succeeded)
                     {
-                        //Redirect to create page with success status?
+                        //Для тестов
+                        return RedirectToAction("Index");
                     }
                 }
                 else
@@ -85,28 +119,44 @@ namespace _66bitProject.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Edit(string id)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Edit(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.Users.Include(u => u.Roles)
+                .SingleAsync(u => u.Id == id);
+            var userRoles = await userManager.GetRolesAsync(user);
+            var roles = roleManager.Roles.ToList();
             if (user != null)
             {
                 EditUserViewModel model = new EditUserViewModel
                 {
+                    FullName = user.FullName,
+                    Email = user.Email,
                     BirthDate = user.BirthDate,
-                    Department = user.Department,
-                    FirstName = user.FirstName,
                     Id = id,
-                    LastName = user.LastName,
-                    MiddleName = user.MiddleName,
-                    Revenue = user.Revenue,
-                    Position = user.Position,
-                    Roles = user.Roles
+                    AllRoles = roles,
+                    Roles = userRoles,
+                    PaymentDate = user.PaymentDay,
+                    PaymentFrequency = user.NumberOfPayments,
+                    HourPayment = user.HourPayment,
+                    PhoneNumber = user.PhoneNumber,
                 };
                 return View(model);
             }
             return NotFound();
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
 
+            if (user != null)
+            {
+                IdentityResult res = await userManager.DeleteAsync(user);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -9,8 +9,8 @@ namespace _66bitProject.Models
 {
     public class EmployeeRevenue
     {
+        public virtual User Person { get; set; }
         [ForeignKey("PersonId")]
-        public User Person { get; set; }
         public int PersonId { get; set; }
         [Key]
         public int RevenueId { get; set; }
@@ -18,6 +18,6 @@ namespace _66bitProject.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int Value { get; set; }
-        public DateTime date { get; set; }
+        public DateTime Date { get; set; }
     }
 }

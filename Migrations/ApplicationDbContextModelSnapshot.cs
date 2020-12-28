@@ -158,22 +158,6 @@ namespace _66bitProject.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("_66bitProject.Models.Department", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Adress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Department");
-                });
-
             modelBuilder.Entity("_66bitProject.Models.EmployeeCost", b =>
                 {
                     b.Property<int>("CostId")
@@ -193,10 +177,15 @@ namespace _66bitProject.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Value")
                         .HasColumnType("text");
 
                     b.HasKey("CostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("EmployeeCosts");
                 });
@@ -211,6 +200,9 @@ namespace _66bitProject.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -223,13 +215,9 @@ namespace _66bitProject.Migrations
                     b.Property<int>("Value")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("date")
-                        .HasColumnType("timestamp without time zone");
-
                     b.HasKey("RevenueId");
 
-                    b.HasIndex("PersonId")
-                        .IsUnique();
+                    b.HasIndex("PersonId");
 
                     b.ToTable("EmployeeRevenues");
                 });
@@ -259,7 +247,12 @@ namespace _66bitProject.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("OverworkID");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Overworks");
                 });
@@ -281,9 +274,6 @@ namespace _66bitProject.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("DepartmentId")
-                        .HasColumnType("text");
-
                     b.Property<string>("Email")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
@@ -291,20 +281,17 @@ namespace _66bitProject.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("FullName")
                         .HasColumnType("text");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
+                    b.Property<int>("HourPayment")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("character varying(256)")
@@ -314,17 +301,20 @@ namespace _66bitProject.Migrations
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
+                    b.Property<int>("NumberOfPayments")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("PaymentDay")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("Position")
-                        .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -337,8 +327,6 @@ namespace _66bitProject.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -412,20 +400,27 @@ namespace _66bitProject.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("_66bitProject.Models.EmployeeCost", b =>
+                {
+                    b.HasOne("_66bitProject.Models.User", null)
+                        .WithMany("Costs")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("_66bitProject.Models.EmployeeRevenue", b =>
                 {
                     b.HasOne("_66bitProject.Models.User", "Person")
-                        .WithOne("Revenue")
-                        .HasForeignKey("_66bitProject.Models.EmployeeRevenue", "PersonId")
+                        .WithMany("Revenues")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("_66bitProject.Models.User", b =>
+            modelBuilder.Entity("_66bitProject.Models.Overwork", b =>
                 {
-                    b.HasOne("_66bitProject.Models.Department", "Department")
-                        .WithMany("Employees")
-                        .HasForeignKey("DepartmentId");
+                    b.HasOne("_66bitProject.Models.User", null)
+                        .WithMany("Overworks")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

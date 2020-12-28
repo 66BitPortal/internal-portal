@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace _66bitProject
 {
-    //public interface IInitializer {
-    //    void Initialize();
-    //}
 
     public class TestInitializer
     {
@@ -31,7 +28,12 @@ namespace _66bitProject
                 User admin = new User
                 {
                     Email = adminMail,
-                    UserName = adminMail
+                    UserName = adminMail,
+                    FullName = "Иванов Пётр Сергеевич",
+                    PhoneNumber = "+79089256384",
+                    BirthDate = new System.DateTime(1990, 5, 20),
+                    PaymentDay = new System.DateTime(2021, 1, 25),
+                    HourPayment = 500
                 };
                 IdentityResult result = await userManager.CreateAsync(admin, adminPass);
                 if (result.Succeeded)
