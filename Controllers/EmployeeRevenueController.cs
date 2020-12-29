@@ -16,6 +16,10 @@ namespace _66bitProject.Controllers
         {
             db = context;
         }
+        public IActionResult Index()
+        {
+            return View(db.EmployeeRevenues.ToListAsync());
+        }
 
         public IActionResult Create()
         {

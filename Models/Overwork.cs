@@ -7,12 +7,14 @@ namespace _66bitProject.Models
 {
     public class Overwork
     {
-        public int PersonID { get; set; }
-        public int OverworkID { get; set; }
-        public int ProjectID { get; set; }
-        public int HoursCount { get; set; }
-        public bool Status { get; set; }
-        public string Description { get; set; }
-        public DateTime Date { get; set; }
+        public int PersonId { get; set; }
+        public User Person { get; set; }//кто переработал
+        public int Id { get; set; }
+        public int ProjectId { get; set; }
+        public Project Project { get; set; }// где переработал
+        public int HoursCount { get; set; }// сколько переработал
+        public bool Status { get; set; }//одобрено \ не одобрено
+        public string Description { get; set; }//комментарий
+        public DateTime Date { get; set; }//когда переработал
     }
 }

@@ -7,12 +7,12 @@
 }
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <a asp-action="Create">Добавить пользователя</a>
+    <a asp-action="Create">Добавить EmployeeCost</a>
     <table class="table">
         <tr><td>EmployeeId</td><td>CostId</td><td>Description</td><td>Confirmation</td><td>Value</td><td>Status</td></tr>
         @foreach (var e in Model)
         {
-            <tr><td>@e.EmployeeId</td><td>@e.Id</td><td>@e.Description</td><td>@e.Confirmation</td><td>@e.Value</td><td>@e.Status</td></tr>
+            <tr><td>@e.Id</td><td>@e.EmployeeId</td><td>@e.Description</td><td>@e.Name</td><td>@e.Value</td><td>@e.Status</td></tr>
         }
     </table>
 </div>

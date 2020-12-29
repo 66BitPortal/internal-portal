@@ -19,6 +19,7 @@ namespace _66bitProject.Controllers
         [Route("employeeCost")]
         public async Task<IActionResult> Index()
         {
+            
             return View(await db.EmployeeCosts.ToListAsync());
         }
         
