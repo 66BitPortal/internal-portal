@@ -16,6 +16,7 @@ namespace _66bitProject.Models
         public int Id { get; set; }
 
         public string Category { get; set; }// ЗП либо дополнительные начисления
+        public int Status { get; set; }//1- Выплачено, 0-не выплачено
         public int Value { get; set; }//сумма
         public DateTime date { get; set; }
     }
