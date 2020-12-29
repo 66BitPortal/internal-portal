@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 namespace _66bitProject.Models
 {
     public class EmployeeCost
-    {
+    { 
+        public int Id { get; set; }
         public int EmployeeId { get; set; }
-        public int CostId { get; set; }
+        
         public string Description { get; set; }
         public string Confirmation { get; set; }
         public string Value { get; set; }

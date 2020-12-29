@@ -16,16 +16,21 @@ namespace _66bitProject.Controllers
         {
             db = context;
         }
-
+        [Route("employeeCost")]
+        public async Task<IActionResult> Index()
+        {
+            return View(await db.EmployeeCosts.ToListAsync());
+        }
+        
         public IActionResult Create()
         {
-
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(EmployeeCost cost)
         {
+
             db.EmployeeCosts.Add(cost);
             await db.SaveChangesAsync();
             return View();

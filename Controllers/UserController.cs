@@ -68,7 +68,7 @@ namespace _66bitProject.Controllers
                     user.BirthDate = model.BirthDate;
                     user.Position = model.Position;
                     user.Department = model.Department;
-                    user.Revenue = new EmployeeRevenue { Amount = model.RevAmount, PaymentFrequency = model.PaymentFrequency, Employee = user };
+                   // user.Revenue = new EmployeeRevenue { Amount = model.RevAmount, PaymentFrequency = model.PaymentFrequency, Employee = user };
 
                     var result = await userManager.UpdateAsync(user);
 
