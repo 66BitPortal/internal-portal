@@ -46,9 +46,9 @@ namespace _66bitProject.Controllers
             return View();
         }
 
-        public IActionResult GetUnpaidRevenues()// возвращает невыплаченные доходы сотрудника
+        public IActionResult GetUnpaidRevenues(int id)// возвращает невыплаченные доходы сотрудника
         {
-            var unpaidRev = db.EmployeeRevenues.Where(x => x.PersonId == GetCurrentUserId().Result && x.Status == 0);
+            var unpaidRev = db.EmployeeRevenues.Where(x => x.PersonId == id && x.Status == 0);
              return View(unpaidRev);
         }
     }
