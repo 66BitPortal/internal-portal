@@ -12,14 +12,19 @@ namespace _66bitProject.Controllers
     public class EmployeeCostController : Controller
     {
         private ApplicationDbContext db;
-        public EmployeeCostController(ApplicationDbContext context)
+        public EmployeeCostController (ApplicationDbContext context)
         {
             db = context;
         }
-
+        [Route("employeeCost")]
+        public async Task<IActionResult> Index()
+        {
+            
+            return View(await db.EmployeeCosts.ToListAsync());
+        }
+        
         public IActionResult Create()
         {
-
             return View();
         }
 

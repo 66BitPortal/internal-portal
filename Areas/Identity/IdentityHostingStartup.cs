@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: HostingStartup(typeof(_66bitProject.Areas.Identity.IdentityHostingStartup))]
+/*[assembly: HostingStartup(typeof(_66bitProject.Areas.Identity.IdentityHostingStartup))]
 namespace _66bitProject.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
@@ -32,4 +32,4 @@ namespace _66bitProject.Areas.Identity
             });
         }
     }
-}
+}*/

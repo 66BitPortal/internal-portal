@@ -35,6 +35,7 @@
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Views\EmployeeRevenue\" />
   </ItemGroup>
 
 </Project>
