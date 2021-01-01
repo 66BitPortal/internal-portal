@@ -1,0 +1,27 @@
+﻿@model _66bitProject.Models.ViewModels.CreateProjectViewModel
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewBag.Title = "Создание проекта";
+}
+<form asp-action="Create" asp-controller="Project" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Название проекта</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <h2>Менеджер</h2>
+    <div class="form-group" asp-for="ManagerId">
+        @foreach (User manager in @Model.AllManagers)
+        {
+            <input type="radio" name ="ManagerId" value="@manager.Id"/>@manager.FullName <br />
+            }
+    </div>
+    <h2>Разработчики</h2>
+    <div class="form-group">
+        @foreach (User dev in @Model.AllDevelopers)
+        {
+            <input type="checkbox" name="DevelopersId" value="@dev.Id"/>@dev.FullName <br />
+            }
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

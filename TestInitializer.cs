@@ -23,6 +23,14 @@ namespace _66bitProject
             {
                 await roleManager.CreateAsync(new IdentityRole<int>("employee"));
             }
+            if (await roleManager.FindByNameAsync("manager") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole<int>("manager"));
+            }
+            if (await roleManager.FindByNameAsync("director") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole<int>("director"));
+            }
             if (await userManager.FindByEmailAsync(adminMail) == null)
             {
                 User admin = new User

@@ -10,8 +10,8 @@ using _66bitProject.Data;
 namespace _66bitProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201226192637_Initial")]
-    partial class Initial
+    [Migration("20201230203911_NewRelations")]
+    partial class NewRelations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -192,6 +192,21 @@ namespace _66bitProject.Migrations
                     b.ToTable("EmployeeCosts");
                 });
 
+            modelBuilder.Entity("_66bitProject.Models.EmployeeProject", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("EmployeeId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("EmployeeProjects");
+                });
+
             modelBuilder.Entity("_66bitProject.Models.EmployeeRevenue", b =>
                 {
                     b.Property<int>("RevenueId")
@@ -254,9 +269,29 @@ namespace _66bitProject.Migrations
 
                     b.HasKey("OverworkID");
 
+                    b.HasIndex("ProjectID");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Overworks");
+                });
+
+            modelBuilder.Entity("_66bitProject.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("_66bitProject.Models.User", b =>
@@ -409,6 +444,21 @@ namespace _66bitProject.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("_66bitProject.Models.EmployeeProject", b =>
+                {
+                    b.HasOne("_66bitProject.Models.User", "Employee")
+                        .WithMany("Projects")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("_66bitProject.Models.Project", "Project")
+                        .WithMany("Employees")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("_66bitProject.Models.EmployeeRevenue", b =>
                 {
                     b.HasOne("_66bitProject.Models.User", "Person")
@@ -420,6 +470,12 @@ namespace _66bitProject.Migrations
 
             modelBuilder.Entity("_66bitProject.Models.Overwork", b =>
                 {
+                    b.HasOne("_66bitProject.Models.Project", null)
+                        .WithMany("Overworks")
+                        .HasForeignKey("ProjectID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("_66bitProject.Models.User", null)
                         .WithMany("Overworks")
                         .HasForeignKey("UserId");

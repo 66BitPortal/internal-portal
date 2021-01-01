@@ -14,7 +14,8 @@ namespace _66bitProject.Data
         public DbSet<EmployeeCost> EmployeeCosts { get; set; }
         public DbSet<EmployeeRevenue> EmployeeRevenues { get; set; }
         public DbSet<Overwork> Overworks { get; set; }
-
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<EmployeeProject> EmployeeProjects { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
         {
@@ -42,6 +43,19 @@ namespace _66bitProject.Data
             {
                 entity.ToTable(name: "Users");
             });
+
+            builder.Entity<EmployeeProject>()
+                .HasKey(ep => new { ep.EmployeeId, ep.ProjectId });
+
+            builder.Entity<EmployeeProject>()
+                .HasOne(ep => ep.Employee)
+                .WithMany(ep => ep.Projects)
+                .HasForeignKey(ep => ep.EmployeeId);
+
+            builder.Entity<EmployeeProject>()
+                .HasOne(ep => ep.Project)
+                .WithMany(ep => ep.Employees)
+                .HasForeignKey(ep => ep.ProjectId);
         }
     }
 }

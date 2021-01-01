@@ -9,7 +9,9 @@ namespace _66bitProject.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        //Возможно не нужно?
+        //Заменить навигационным свйоством на юзера?
+        public int ManagerId { get; set; }
         public ICollection<Overwork> Overworks { get; set; }
+        public ICollection<EmployeeProject> Employees { get; set; } = new List<EmployeeProject>();
     }
 }

@@ -4,10 +4,24 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace _66bitProject.Migrations
 {
-    public partial class Initial : Migration
+    public partial class NewRelations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(nullable: true),
+                    ManagerId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -154,6 +168,30 @@ namespace _66bitProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployeeProjects",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(nullable: false),
+                    ProjectId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeProjects", x => new { x.EmployeeId, x.ProjectId });
+                    table.ForeignKey(
+                        name: "FK_EmployeeProjects_Users_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeProjects_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeRevenues",
                 columns: table => new
                 {
@@ -194,6 +232,12 @@ namespace _66bitProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Overworks", x => x.OverworkID);
+                    table.ForeignKey(
+                        name: "FK_Overworks_Projects_ProjectID",
+                        column: x => x.ProjectID,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Overworks_Users_UserId",
                         column: x => x.UserId,
@@ -289,9 +333,19 @@ namespace _66bitProject.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeProjects_ProjectId",
+                table: "EmployeeProjects",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeRevenues_PersonId",
                 table: "EmployeeRevenues",
                 column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Overworks_ProjectID",
+                table: "Overworks",
+                column: "ProjectID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Overworks_UserId",
@@ -331,6 +385,9 @@ namespace _66bitProject.Migrations
                 name: "EmployeeCosts");
 
             migrationBuilder.DropTable(
+                name: "EmployeeProjects");
+
+            migrationBuilder.DropTable(
                 name: "EmployeeRevenues");
 
             migrationBuilder.DropTable(
@@ -338,6 +395,9 @@ namespace _66bitProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "Users");

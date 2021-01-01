@@ -1,0 +1,32 @@
+﻿@model _66bitProject.Models.ViewModels.EditProjectViewModel
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewBag.Title = "Редактирование проекта";
+}
+<form asp-action="Edit" asp-controller="Project" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="ProjectId" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Название проекта</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <h2>Менеджер</h2>
+    <div class="form-group">
+        @foreach (User manager in @Model.AllManagers)
+        {
+            <input type="radio" name="managerId" value="@manager.Id"
+                   @(Model.ManagerId == manager.Id ? "checked=\"checked\"" : "") />@manager.FullName <br />
+            }
+    </div>
+    <h2>Разработчики</h2>
+    <div class="form-group">
+        @foreach (User dev in @Model.AllDevelopers)
+        {
+            <input type="checkbox" name="developersId" value="@dev.Id"
+                   @(Model.DevelopersId.Contains(dev.Id) ? "checked=\"checked\"" : "") />@dev.FullName <br />
+            }
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

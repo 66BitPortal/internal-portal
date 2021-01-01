@@ -10,7 +10,6 @@ namespace _66bitProject.Models
     public class User : IdentityUser<int>
     {
         #region Поля профиля
-
         public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
         public int HourPayment { get; set; }
@@ -19,6 +18,7 @@ namespace _66bitProject.Models
         public ICollection<EmployeeRevenue> Revenues { get; set; }
         public ICollection<Overwork> Overworks { get; set; }
         public ICollection<EmployeeCost> Costs { get; set; }
+        public ICollection<EmployeeProject> Projects { get; set; } = new List<EmployeeProject>();
 
         #endregion
 
