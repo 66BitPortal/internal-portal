@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Иван\\Desktop\\66bitProject-master\\66bitProject.csproj": {}
+    "Y:\\66bitProject-master\\66bitProject-master\\internal-portal\\66bitProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Иван\\Desktop\\66bitProject-master\\66bitProject.csproj": {
+    "Y:\\66bitProject-master\\66bitProject-master\\internal-portal\\66bitProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Иван\\Desktop\\66bitProject-master\\66bitProject.csproj",
+        "projectUniqueName": "Y:\\66bitProject-master\\66bitProject-master\\internal-portal\\66bitProject.csproj",
         "projectName": "66bitProject",
-        "projectPath": "C:\\Users\\Иван\\Desktop\\66bitProject-master\\66bitProject.csproj",
-        "packagesPath": "C:\\Users\\Иван\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Иван\\Desktop\\66bitProject-master\\obj\\",
+        "projectPath": "Y:\\66bitProject-master\\66bitProject-master\\internal-portal\\66bitProject.csproj",
+        "packagesPath": "C:\\Users\\Номе\\.nuget\\packages\\",
+        "outputPath": "Y:\\66bitProject-master\\66bitProject-master\\internal-portal\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Иван\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Номе\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +29,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -38,7 +40,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
@@ -87,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
         }
       }
     }
