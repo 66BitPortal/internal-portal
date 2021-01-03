@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace _66bitProject.Migrations
 {
-    public partial class NewRelations : Migration
+    public partial class NewRelationsUpdated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -147,18 +147,20 @@ namespace _66bitProject.Migrations
                 name: "EmployeeCosts",
                 columns: table => new
                 {
-                    CostId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EmployeeId = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Confirmation = table.Column<string>(nullable: true),
-                    Value = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Value = table.Column<int>(nullable: false),
+                    Category = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeCosts", x => x.CostId);
+                    table.PrimaryKey("PK_EmployeeCosts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_EmployeeCosts_Users_UserId",
                         column: x => x.UserId,
@@ -195,18 +197,17 @@ namespace _66bitProject.Migrations
                 name: "EmployeeRevenues",
                 columns: table => new
                 {
-                    RevenueId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PersonId = table.Column<int>(nullable: false),
                     Category = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false),
                     Value = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false)
+                    date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeRevenues", x => x.RevenueId);
+                    table.PrimaryKey("PK_EmployeeRevenues", x => x.Id);
                     table.ForeignKey(
                         name: "FK_EmployeeRevenues_Users_PersonId",
                         column: x => x.PersonId,
@@ -219,31 +220,30 @@ namespace _66bitProject.Migrations
                 name: "Overworks",
                 columns: table => new
                 {
-                    OverworkID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PersonID = table.Column<int>(nullable: false),
-                    ProjectID = table.Column<int>(nullable: false),
+                    PersonId = table.Column<int>(nullable: false),
+                    ProjectId = table.Column<int>(nullable: false),
                     HoursCount = table.Column<int>(nullable: false),
                     Status = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: true)
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Overworks", x => x.OverworkID);
+                    table.PrimaryKey("PK_Overworks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Overworks_Projects_ProjectID",
-                        column: x => x.ProjectID,
-                        principalTable: "Projects",
+                        name: "FK_Overworks_Users_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Overworks_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Overworks_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -343,14 +343,14 @@ namespace _66bitProject.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Overworks_ProjectID",
+                name: "IX_Overworks_PersonId",
                 table: "Overworks",
-                column: "ProjectID");
+                column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Overworks_UserId",
+                name: "IX_Overworks_ProjectId",
                 table: "Overworks",
-                column: "UserId");
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",

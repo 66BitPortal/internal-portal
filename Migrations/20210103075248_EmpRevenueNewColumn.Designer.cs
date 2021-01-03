@@ -10,8 +10,8 @@ using _66bitProject.Data;
 namespace _66bitProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201230203911_NewRelations")]
-    partial class NewRelations
+    [Migration("20210103075248_EmpRevenueNewColumn")]
+    partial class EmpRevenueNewColumn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -162,13 +162,16 @@ namespace _66bitProject.Migrations
 
             modelBuilder.Entity("_66bitProject.Models.EmployeeCost", b =>
                 {
-                    b.Property<int>("CostId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Confirmation")
+                    b.Property<string>("Category")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -176,16 +179,19 @@ namespace _66bitProject.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("boolean");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
 
-                    b.HasKey("CostId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -209,18 +215,12 @@ namespace _66bitProject.Migrations
 
             modelBuilder.Entity("_66bitProject.Models.EmployeeRevenue", b =>
                 {
-                    b.Property<int>("RevenueId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Category")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -229,10 +229,16 @@ namespace _66bitProject.Migrations
                     b.Property<int>("PersonId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("Value")
                         .HasColumnType("integer");
 
-                    b.HasKey("RevenueId");
+                    b.Property<DateTime>("date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("PersonId");
 
@@ -241,7 +247,7 @@ namespace _66bitProject.Migrations
 
             modelBuilder.Entity("_66bitProject.Models.Overwork", b =>
                 {
-                    b.Property<int>("OverworkID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
@@ -255,23 +261,20 @@ namespace _66bitProject.Migrations
                     b.Property<int>("HoursCount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PersonID")
+                    b.Property<int>("PersonId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProjectID")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Status")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
+                    b.HasKey("Id");
 
-                    b.HasKey("OverworkID");
+                    b.HasIndex("PersonId");
 
-                    b.HasIndex("ProjectID");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Overworks");
                 });
@@ -470,15 +473,17 @@ namespace _66bitProject.Migrations
 
             modelBuilder.Entity("_66bitProject.Models.Overwork", b =>
                 {
-                    b.HasOne("_66bitProject.Models.Project", null)
+                    b.HasOne("_66bitProject.Models.User", "Person")
                         .WithMany("Overworks")
-                        .HasForeignKey("ProjectID")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("_66bitProject.Models.User", null)
+                    b.HasOne("_66bitProject.Models.Project", "Project")
                         .WithMany("Overworks")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -19,6 +19,8 @@
     <Compile Remove="Migrations\20201230202724_Test.Designer.cs" />
     <Compile Remove="Migrations\20201230203008_Test.cs" />
     <Compile Remove="Migrations\20201230203008_Test.Designer.cs" />
+    <Compile Remove="Migrations\20210103044618_FixedRelations.cs" />
+    <Compile Remove="Migrations\20210103044618_FixedRelations.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +37,6 @@
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Views\EmployeeRevenue\" />
   </ItemGroup>
 
 </Project>

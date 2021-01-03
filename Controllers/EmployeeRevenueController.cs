@@ -19,6 +19,7 @@ namespace _66bitProject.Controllers
             db = context;
             _userManager = userManager;
         }
+
         [HttpGet]
         public async Task<int> GetCurrentUserId()
         {
@@ -29,9 +30,11 @@ namespace _66bitProject.Controllers
 
         public IActionResult Index()
         {
-            return View(db.EmployeeRevenues.ToListAsync());
+            var user = GetCurrentUserAsync().Result;
+            return View(db.EmployeeRevenues.Where(er => er.PersonId == user.Id));
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
 
@@ -48,7 +51,7 @@ namespace _66bitProject.Controllers
 
         public IActionResult GetUnpaidRevenues(int id)// возвращает невыплаченные доходы сотрудника
         {
-            var unpaidRev = db.EmployeeRevenues.Where(x => x.PersonId == id && x.Status == 0);
+            var unpaidRev = db.EmployeeRevenues.Where(x => x.PersonId == id && !x.Status);
              return View(unpaidRev);
         }
     }

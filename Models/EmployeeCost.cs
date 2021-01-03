@@ -16,7 +16,7 @@ namespace _66bitProject.Models
         public string Name { get; set; }//название
         public int Value { get; set; }//сумма
         public string Category { get; set; }//категория
-        public int Status { get; set; }//1 or 0, bool
+        public bool Status { get; set; }
         public DateTime Date { get; set; }
 
     }
