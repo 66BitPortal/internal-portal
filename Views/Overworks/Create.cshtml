@@ -1,0 +1,19 @@
+﻿@model _66bitProject.Models.ViewModels.CreateOverworkViewModel
+<form asp-action="Create" asp-controller="EmplyeeCost" asp-antiforgery="true">
+    <div>
+        <label asp-for="HoursCount"></label>
+        <input type="number" asp-for="HoursCount" />
+    </div>
+    <div>
+        <label asp-for="Project"></label>
+        <input type="text" asp-for="Project" />
+    </div>
+    <div>
+        <label asp-for="Description"></label>
+        <input type="text" asp-for="Description" />
+    </div>
+
+    <div>
+        <input type="submit" value="Save" />
+    </div>
+</form>

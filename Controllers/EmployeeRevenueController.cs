@@ -30,8 +30,8 @@ namespace _66bitProject.Controllers
 
         public IActionResult Index()
         {
-            var user = GetCurrentUserAsync().Result;
-            return View(db.EmployeeRevenues.Where(er => er.PersonId == user.Id));
+            var userId = GetCurrentUserId().Result;
+            return View(db.EmployeeRevenues.Where(er => er.PersonId == userId));
         }
 
         [HttpGet]

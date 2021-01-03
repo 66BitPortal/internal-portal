@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Overwork>
+@{
+    ViewBag.Title = "Все overworks юзера";
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <a asp-action="Create">Добавить Overwork</a>
+    <table class="table">
+        <tr><td>Description</td><td>HoursCount</td><td>Status</td></tr>
+        @foreach (var e in Model)
+        {
+            <tr><td>@e.Description</td><td>@e.HoursCount</td><td>@e.Status</td></tr>
+        }
+    </table>
+</div>
+
