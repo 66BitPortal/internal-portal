@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace _66bitProject.Migrations
 {
-    public partial class NewRelationsUpdated : Migration
+    public partial class Initial2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -200,6 +200,7 @@ namespace _66bitProject.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PersonId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     Category = table.Column<string>(nullable: true),
                     Status = table.Column<bool>(nullable: false),
                     Value = table.Column<int>(nullable: false),

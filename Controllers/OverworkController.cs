@@ -31,13 +31,14 @@ namespace _66bitProject.Controllers
             _userManager = userManager;
         }
 
-        /*[Authorize(Roles="admin")]
-        public IActionResult Index()
+        //[Authorize(Roles="admin")]
+        public IActionResult ShowAll()
         {     
             return View(db.Overworks.ToList());
-        } НУЖНО СДЕЛАТЬ ДЛЯ АДМИНА ИЛИ МЕНЕДЖЕРА ОТОБРАЖЕНИЕ ВСЕХ ПЕРЕРАБОТОК*/
+        }// НУЖНО СДЕЛАТЬ ДЛЯ АДМИНА ИЛИ МЕНЕДЖЕРА ОТОБРАЖЕНИЕ ВСЕХ ПЕРЕРАБОТОК
 
-        [Authorize(Roles = "employee")]
+        //[Authorize(Roles = "employee")]
+        [Route("overwork")]
         public IActionResult Index()
         {
             var userId = GetCurrentUserId().Result;
@@ -47,9 +48,9 @@ namespace _66bitProject.Controllers
 
 
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> ChangeStatus(int? id)
+        public IActionResult ChangeStatus(int? id)
         {
             var newOverwork = db.Overworks.Where(x => x.Id == id).FirstOrDefault();
             newOverwork.Status = !newOverwork.Status;
@@ -59,6 +60,7 @@ namespace _66bitProject.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.Projects = db.Projects.ToList();
 
             return View();
         }
@@ -67,7 +69,7 @@ namespace _66bitProject.Controllers
         public async Task<IActionResult> Create(CreateOverworkViewModel overwork)
         {
             var newOverwork = new Overwork() { Description = overwork.Description, HoursCount = overwork.HoursCount };
-            var project = db.Projects.Where(x => x.Name == overwork.Project).FirstOrDefault();
+            var project = db.Projects.Where(x => x.Id.ToString() == overwork.Project).FirstOrDefault();
             var personId = GetCurrentUserId();
             var person = db.Users.Where(x => x.Id == personId.Result).FirstOrDefault();
             var date = DateTime.Today;
@@ -80,7 +82,7 @@ namespace _66bitProject.Controllers
             newOverwork.Status = status;
             db.Overworks.Add(newOverwork);
             await db.SaveChangesAsync();
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }

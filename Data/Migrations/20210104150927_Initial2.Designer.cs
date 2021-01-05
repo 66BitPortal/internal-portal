@@ -10,8 +10,8 @@ using _66bitProject.Data;
 namespace _66bitProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210103075248_EmpRevenueNewColumn")]
-    partial class EmpRevenueNewColumn
+    [Migration("20210104150927_Initial2")]
+    partial class Initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
