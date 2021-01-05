@@ -31,11 +31,48 @@ namespace _66bitProject.Controllers
             _userManager = userManager;
         }
 
-        //[Authorize(Roles="admin")]
+        [Authorize(Roles="admin")]
         public IActionResult ShowAll()
-        {     
-            return View(db.Overworks.ToList());
+        {
+            var allOverworks = db.Overworks.ToList();
+            foreach(var o in allOverworks)
+            {
+                o.Person = db.Users.FirstOrDefault(x => x.Id == o.PersonId);
+            }
+            return View(allOverworks);
         }// НУЖНО СДЕЛАТЬ ДЛЯ АДМИНА ИЛИ МЕНЕДЖЕРА ОТОБРАЖЕНИЕ ВСЕХ ПЕРЕРАБОТОК
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id != null)
+            {
+                var overwork = await db.Overworks.FirstOrDefaultAsync(p => p.Id == id);
+                if (overwork != null)
+                {
+                    overwork.Person = db.Users.FirstOrDefault(x => x.Id == overwork.PersonId);
+                    overwork.Project = db.Projects.FirstOrDefault(x => x.Id == overwork.ProjectId);
+                    return View(overwork);
+                }
+                    
+            }
+            return NotFound();
+        }
+
+        [Authorize(Roles = "admin")]
+        
+        public async Task<IActionResult> ChangeStatus(int? id)
+        {
+            if (id != null)
+            {
+                var newOverwork = await db.Overworks.FirstOrDefaultAsync(x => x.Id == id);
+                newOverwork.Status = !newOverwork.Status;
+                db.Overworks.Update(newOverwork);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index", "User");//хз куда редиректить
+            }
+            return NotFound();
+        }
+
 
         //[Authorize(Roles = "employee")]
         [Route("overwork")]
@@ -48,15 +85,7 @@ namespace _66bitProject.Controllers
 
 
 
-        //[Authorize(Roles = "admin")]
-        [HttpPost]
-        public IActionResult ChangeStatus(int? id)
-        {
-            var newOverwork = db.Overworks.Where(x => x.Id == id).FirstOrDefault();
-            newOverwork.Status = !newOverwork.Status;
-            db.Overworks.Update(newOverwork);
-            return RedirectToAction("Index");//хз куда редиректить
-        }//Изменение статуса, в дизайне этого нет
+
 
         public IActionResult Create()
         {
@@ -73,13 +102,11 @@ namespace _66bitProject.Controllers
             var personId = GetCurrentUserId();
             var person = db.Users.Where(x => x.Id == personId.Result).FirstOrDefault();
             var date = DateTime.Today;
-            var status = false;
             newOverwork.Project = project;
             newOverwork.ProjectId = project.Id;
             newOverwork.Person = person;
             newOverwork.PersonId = person.Id;
             newOverwork.Date = date;
-            newOverwork.Status = status;
             db.Overworks.Add(newOverwork);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
