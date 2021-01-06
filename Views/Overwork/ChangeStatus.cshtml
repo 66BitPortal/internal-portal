@@ -1,1 +1,29 @@
-﻿<p>status was changed</p>
+﻿@model _66bitProject.Models.Overwork
+
+
+<text>ФИО</text>
+<br />
+<text>@Model.Person.FullName</text>
+<br />
+<br />
+<text>Сумма</text>
+<br />
+<text>@(Model.HoursCount * (Model.Person.HourPayment * 2))</text>
+<br />
+<br />
+<text>Описание</text>
+<br />
+<text>@Model.Description</text>
+<br />
+<br />
+<text>Дата</text>
+<br />
+<text>@Model.Date</text>
+<br />
+
+<form method="post" asp-controller="Overwork" asp-route-id="@Model.Id" asp-route-status="@true" asp-action="ChangeStatus">
+    <input type="submit" value="Одобрить" />
+</form>
+<form method="post" asp-controller="Overwork" asp-route-id="@Model.Id" asp-route-status="@false" asp-action="ChangeStatus">
+    <input type="submit" value="Отказать" />
+</form>

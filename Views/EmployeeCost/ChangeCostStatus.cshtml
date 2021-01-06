@@ -1,0 +1,24 @@
+﻿@model _66bitProject.Models.EmployeeCost
+
+
+<text>ФИО</text><br />
+<text>@Model.Employee.FullName</text><br />
+                                     <br />
+<text>Название</text><br />
+<text>@Model.Name</text><br />
+                        <br />
+<text>Категория</text><br />
+<text>@Model.Description</text><br />
+                               <br />
+<text>Сумма</text><br />
+<text>@Model.Value</text><br />
+                         <br />
+<text>Дата</text><br />
+<text>@Model.Date</text><br />
+
+<form method="post" asp-controller="EmployeeCost" asp-route-id="@Model.Id" asp-route-status="@true" asp-action="ChangeCostStatus">
+    <input type="submit" value="Одобрить" />
+</form>
+<form method="post" asp-controller="EmployeeCost" asp-route-id="@Model.Id" asp-route-status="@false" asp-action="ChangeCostStatus">
+    <input type="submit" value="Отказать" />
+</form>

@@ -15,7 +15,7 @@ namespace _66bitProject.Controllers
     public class OverworkController : Controller
     {
         private ApplicationDbContext db;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<User> userManager;
         [HttpGet]
         public async Task<int> GetCurrentUserId()
         {
@@ -23,93 +23,72 @@ namespace _66bitProject.Controllers
             return user.Id;
         }
 
-        private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+        private Task<User> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
         public OverworkController(ApplicationDbContext context, UserManager<User> userManager)
         {
             db = context;
-            _userManager = userManager;
+            this.userManager = userManager;
         }
 
-        [Authorize(Roles="admin")]
-        public IActionResult ShowAll()
+        [Authorize(Roles = "employee, manager")]
+        public IActionResult ShowOwnOverworks()
         {
-            var allOverworks = db.Overworks.ToList();
-            foreach(var o in allOverworks)
-            {
-                o.Person = db.Users.FirstOrDefault(x => x.Id == o.PersonId);
-            }
-            return View(allOverworks);
-        }// НУЖНО СДЕЛАТЬ ДЛЯ АДМИНА ИЛИ МЕНЕДЖЕРА ОТОБРАЖЕНИЕ ВСЕХ ПЕРЕРАБОТОК
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id != null)
-            {
-                var overwork = await db.Overworks.FirstOrDefaultAsync(p => p.Id == id);
-                if (overwork != null)
-                {
-                    overwork.Person = db.Users.FirstOrDefault(x => x.Id == overwork.PersonId);
-                    overwork.Project = db.Projects.FirstOrDefault(x => x.Id == overwork.ProjectId);
-                    return View(overwork);
-                }
-                    
-            }
-            return NotFound();
+            var currentUserId = int.Parse(userManager.GetUserId(HttpContext.User));
+            var overworks = db.Overworks.Include(o => o.Person).Where(o => o.Person.Id == currentUserId);
+            return View(overworks);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "manager")]
+        public IActionResult AllOverworks()
+        {
+            var overworks = db.Overworks.Include(o => o.Person);
+            return View(overworks);
+        }
+
+        [Authorize(Roles = "manager")]
+        [HttpGet]
+        public IActionResult ChangeStatus(int? id)
+        {
+            var overwork = db.Overworks.Include(o => o.Person).Where(o => o.Id == id).Single();
+            return View(overwork);
+        }
+
         
-        public async Task<IActionResult> ChangeStatus(int? id)
+        public async Task<IActionResult> ChangeStatus(int id, bool status)
         {
-            if (id != null)
-            {
-                var newOverwork = await db.Overworks.FirstOrDefaultAsync(x => x.Id == id);
-                newOverwork.Status = !newOverwork.Status;
-                db.Overworks.Update(newOverwork);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index", "User");//хз куда редиректить
-            }
-            return NotFound();
+            var overwork = await db.Overworks.FindAsync(id);
+            overwork.Status = status;
+            await db.SaveChangesAsync();
+            return RedirectToAction("AllOverworks");
         }
 
-
-        //[Authorize(Roles = "employee")]
-        [Route("overwork")]
-        public IActionResult Index()
-        {
-            var userId = GetCurrentUserId().Result;
-            return View(db.Overworks.Where(x => x.PersonId == userId));
-        }
-
-
-
-
-
-
+        [Authorize(Roles = "employee, manager")]
+        [HttpGet]
         public IActionResult Create()
         {
             ViewBag.Projects = db.Projects.ToList();
-
-            return View();
+            CreateOverworkViewModel model = new CreateOverworkViewModel();
+            return View(model);
         }
 
+        [Authorize(Roles = "employee, manager")]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateOverworkViewModel overwork)
+        public async Task<IActionResult> Create(CreateOverworkViewModel model)
         {
-            var newOverwork = new Overwork() { Description = overwork.Description, HoursCount = overwork.HoursCount };
-            var project = db.Projects.Where(x => x.Id.ToString() == overwork.Project).FirstOrDefault();
-            var personId = GetCurrentUserId();
-            var person = db.Users.Where(x => x.Id == personId.Result).FirstOrDefault();
-            var date = DateTime.Today;
-            newOverwork.Project = project;
-            newOverwork.ProjectId = project.Id;
-            newOverwork.Person = person;
-            newOverwork.PersonId = person.Id;
-            newOverwork.Date = date;
+            var project = db.Projects.Where(p => p.Id == model.ProjectId).Single();
+            var personId = GetCurrentUserId().Result;
+            var person = await db.Users.FindAsync(personId);
+            var newOverwork = new Overwork() {
+                Description = model.Description,
+                HoursCount = model.HoursCount,
+                Date = DateTime.Today,
+                Project = project,
+                Person = person
+            };
             db.Overworks.Add(newOverwork);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("ShowOwnOverworks");
         }
     }
 }

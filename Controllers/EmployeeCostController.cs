@@ -58,5 +58,39 @@ namespace _66bitProject.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("ShowOwnCosts");
         }
+
+        //Версия, если менеджер не может одобрять свои расходы
+        //[Authorize(Roles = "manager")]
+        //public async Task<IActionResult> AllEmpCosts()
+        //{
+        //    var employees = await UserManager.GetUsersInRoleAsync("employee");
+        //    IEnumerable<EmployeeCost> costs = db.EmployeeCosts.AsEnumerable().Where(ec => employees.Contains(ec.Employee)).Where(ec => ec.Status == null);
+        //    return View(costs);
+        //}
+
+        [Authorize(Roles = "manager")]
+        public IActionResult AllEmpCosts()
+        {
+            var costs = db.EmployeeCosts.Include(ec => ec.Employee).ToList();
+            return View(costs);
+        }
+
+        [Authorize(Roles = "manager")]
+        [HttpGet]
+        public IActionResult ChangeCostStatus(int id)
+        {
+            var cost = db.EmployeeCosts.Include(ec => ec.Employee).Where(ec => ec.Id == id).Single();
+            return View(cost);
+        }
+
+        [Authorize(Roles = "manager")]
+        [HttpPost]
+        public async Task<IActionResult> ChangeCostStatus(int id, bool status)
+        {
+            var cost = await db.EmployeeCosts.FindAsync(id);
+            cost.Status = status;
+            await db.SaveChangesAsync();
+            return RedirectToAction("AllEmpCosts");
+        }
     }
 }

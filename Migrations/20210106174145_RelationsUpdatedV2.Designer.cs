@@ -10,8 +10,8 @@ using _66bitProject.Data;
 namespace _66bitProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210103185322_NewRelationsUpdated")]
-    partial class NewRelationsUpdated
+    [Migration("20210106174145_RelationsUpdatedV2")]
+    partial class RelationsUpdatedV2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -258,10 +258,10 @@ namespace _66bitProject.Migrations
                     b.Property<int>("HoursCount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int?>("PersonId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Status")
@@ -472,15 +472,11 @@ namespace _66bitProject.Migrations
                 {
                     b.HasOne("_66bitProject.Models.User", "Person")
                         .WithMany("Overworks")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PersonId");
 
                     b.HasOne("_66bitProject.Models.Project", "Project")
                         .WithMany("Overworks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectId");
                 });
 #pragma warning restore 612, 618
         }

@@ -21,5 +21,11 @@ namespace _66bitProject.Controllers
         {
             return View();
         }
+
+        [Authorize(Roles = "employee")]
+        public IActionResult EmployeeOwnOverworks()
+        {
+            return View();
+        }
     }
 }

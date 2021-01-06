@@ -6,9 +6,9 @@
     </div>
     
       <div>  
-        <label asp-for="Project"></label>
+        <label asp-for="ProjectId"></label>
         <p>
-            <select size="1" asp-for="Project">
+            <select size="1" asp-for="ProjectId">
                 @foreach (var pr in ViewBag.Projects)
                 {
                     <option value="@pr.Id">@pr.Name</option>
@@ -21,6 +21,6 @@
     </div>
 
     <div>
-        <input type="submit" value="Save" />
+        <input type="submit" value="Добавить" />
     </div>
 </form>

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace _66bitProject.Migrations
 {
-    public partial class NewRelationsUpdated : Migration
+    public partial class RelationsUpdatedV2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -222,8 +222,8 @@ namespace _66bitProject.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PersonId = table.Column<int>(nullable: false),
-                    ProjectId = table.Column<int>(nullable: false),
+                    PersonId = table.Column<int>(nullable: true),
+                    ProjectId = table.Column<int>(nullable: true),
                     HoursCount = table.Column<int>(nullable: false),
                     Status = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(nullable: true),
@@ -237,13 +237,13 @@ namespace _66bitProject.Migrations
                         column: x => x.PersonId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Overworks_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

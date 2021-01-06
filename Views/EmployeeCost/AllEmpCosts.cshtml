@@ -1,0 +1,26 @@
+﻿@model IEnumerable<_66bitProject.Models.EmployeeCost>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <tr><td>ФИО сотрудника</td><td>Status</td></tr>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Employee.FullName</td>
+                @if (e.Status == null)
+                {
+                    <td><a asp-controller="EmployeeCost" asp-action="ChangeCostStatus" asp-route-id="@e.Id">Ожидает решения</a></td>
+                }
+                else if ((bool)e.Status)
+                {
+                    <td>"Одобрено: " + @e.Value.ToString()</td>
+                }
+                else
+                {
+                    <td>"Отклонено"</td>
+                }
+            </tr>
+        }
+    </table>
+</div>

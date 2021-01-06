@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Overwork>
+@{
+    ViewBag.Title = "Все переработки";
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <tr><td>Description</td><td>Date</td><td>Hours</td><td>Status</td></tr>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.Description</td>
+                <td>@o.Date</td>
+                <td>@o.HoursCount</td>
+                @if (o.Status == null)
+                {
+                    <td>"Не решено"</td>
+                }
+                else if ((bool)o.Status)
+                {
+                    <td>"Одобрено"</td>
+                }
+                else
+                {
+                    <td>"Отклонено"</td>
+                }
+            </tr>
+        }
+    </table>
+</div>
