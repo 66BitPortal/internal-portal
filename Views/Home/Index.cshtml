@@ -3,11 +3,36 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <form method="post" asp-controller="User" asp-action="Index">
-        <input type="submit" value="Кабинет администратора" />
-    </form>
+    @if (User.IsInRole("admin"))
+    {
+        <form method="post" asp-controller="User" asp-action="Index">
+            <input type="submit" value="Кабинет администратора" />
+        </form>
+    }
+    else if (User.IsInRole("employee"))
+    {
+        <form method="post" asp-controller="Programmer" asp-action="Index">
+            <input type="submit" value="Личный кабинет" />
+        </form>
+    }
+    else if (User.IsInRole("manager"))
+    {
+        <form method="post" asp-controller="Manager" asp-action="Index">
+            <input type="submit" value="Личный кабинет" />
+        </form>
+    }
+    else if (User.IsInRole("financialSpec"))
+    {
+        <form method="post" asp-controller="Programmer" asp-action="Index">
+            <input type="submit" value="Личный кабинет" />
+        </form>
+    }
+    else if (User.IsInRole("director"))
+    {
+        <form method="post" asp-controller="Programmer" asp-action="Index">
+            <input type="submit" value="Личный кабинет" />
+        </form>
+    }
 </div>
 
 @if (User.Identity.IsAuthenticated)

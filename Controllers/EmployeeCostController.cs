@@ -6,34 +6,57 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using _66bitProject.Models;
 using _66bitProject.Data;
+using Microsoft.AspNetCore.Identity;
+using _66bitProject.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _66bitProject.Controllers
 {
     public class EmployeeCostController : Controller
     {
         private ApplicationDbContext db;
-        public EmployeeCostController (ApplicationDbContext context)
+        private readonly UserManager<User> UserManager;
+
+        public EmployeeCostController (ApplicationDbContext context, UserManager<User> userManager)
         {
+            UserManager = userManager;
             db = context;
         }
-        [Route("employeeCost")]
-        public async Task<IActionResult> Index()
+
+        //Отображение расходов для программиста
+        [Authorize(Roles = "employee, manager")]
+        public IActionResult ShowOwnCosts()
         {
-            
-            return View(await db.EmployeeCosts.ToListAsync());
+            var currentUserId = int.Parse(UserManager.GetUserId(HttpContext.User));
+            var costs = db.EmployeeCosts.Where(c => c.Employee.Id== currentUserId).ToList();
+            return View(costs);
         }
         
+        [Authorize(Roles = "employee, manager")]
+        [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            CreateEmployeeCostViewModel model = new CreateEmployeeCostViewModel();
+            return View(model);
         }
 
+        [Authorize(Roles = "employee, manager")]
         [HttpPost]
-        public async Task<IActionResult> Create(EmployeeCost cost)
+        public async Task<IActionResult> Create(CreateEmployeeCostViewModel model)
         {
-            db.EmployeeCosts.Add(cost);
+            var user = await UserManager.GetUserAsync(HttpContext.User);
+            var cost = new EmployeeCost
+            {
+                Category = model.Category,
+                Date = model.Date,
+                Description = model.Description,
+                Value = model.Value,
+                Name = model.Name,
+                Employee = user
+            };
+            await db.EmployeeCosts.AddAsync(cost);
             await db.SaveChangesAsync();
-            return View();
+            return RedirectToAction("ShowOwnCosts");
         }
     }
 }

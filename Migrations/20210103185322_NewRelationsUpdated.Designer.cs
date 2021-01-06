@@ -10,8 +10,8 @@ using _66bitProject.Data;
 namespace _66bitProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210103075248_EmpRevenueNewColumn")]
-    partial class EmpRevenueNewColumn
+    [Migration("20210103185322_NewRelationsUpdated")]
+    partial class NewRelationsUpdated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -176,24 +176,21 @@ namespace _66bitProject.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("boolean");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("Value")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("EmployeeCosts");
                 });
@@ -442,9 +439,9 @@ namespace _66bitProject.Migrations
 
             modelBuilder.Entity("_66bitProject.Models.EmployeeCost", b =>
                 {
-                    b.HasOne("_66bitProject.Models.User", null)
+                    b.HasOne("_66bitProject.Models.User", "Employee")
                         .WithMany("Costs")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("_66bitProject.Models.EmployeeProject", b =>

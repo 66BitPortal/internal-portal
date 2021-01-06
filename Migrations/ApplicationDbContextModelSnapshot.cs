@@ -174,24 +174,21 @@ namespace _66bitProject.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("boolean");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("Value")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("EmployeeCosts");
                 });
@@ -440,9 +437,9 @@ namespace _66bitProject.Migrations
 
             modelBuilder.Entity("_66bitProject.Models.EmployeeCost", b =>
                 {
-                    b.HasOne("_66bitProject.Models.User", null)
+                    b.HasOne("_66bitProject.Models.User", "Employee")
                         .WithMany("Costs")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("_66bitProject.Models.EmployeeProject", b =>

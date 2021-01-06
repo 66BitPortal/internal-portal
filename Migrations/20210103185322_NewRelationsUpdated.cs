@@ -149,21 +149,20 @@ namespace _66bitProject.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EmployeeId = table.Column<int>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Value = table.Column<int>(nullable: false),
                     Category = table.Column<string>(nullable: true),
-                    Status = table.Column<bool>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: true)
+                    Status = table.Column<bool>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmployeeCosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmployeeCosts_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_EmployeeCosts_Users_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -200,6 +199,7 @@ namespace _66bitProject.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PersonId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     Category = table.Column<string>(nullable: true),
                     Status = table.Column<bool>(nullable: false),
                     Value = table.Column<int>(nullable: false),
@@ -328,9 +328,9 @@ namespace _66bitProject.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeCosts_UserId",
+                name: "IX_EmployeeCosts_EmployeeId",
                 table: "EmployeeCosts",
-                column: "UserId");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeProjects_ProjectId",
