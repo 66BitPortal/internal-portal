@@ -1,0 +1,26 @@
+﻿@model _66bitProject.Models.ViewModels.CreateOverworkViewModel
+<form asp-action="Create" asp-controller="Overwork" asp-antiforgery="true">
+    <div>
+        <label asp-for="HoursCount"></label>
+        <input type="number" asp-for="HoursCount" />
+    </div>
+    
+      <div>  
+        <label asp-for="Project"></label>
+        <p>
+            <select size="1" asp-for="Project">
+                @foreach (var pr in ViewBag.Projects)
+                {
+                    <option value="@pr.Id">@pr.Name</option>
+                }
+            </select></p>
+    </div>
+    <div>
+        <label asp-for="Description"></label>
+        <input type="text" asp-for="Description" />
+    </div>
+
+    <div>
+        <input type="submit" value="Save" />
+    </div>
+</form>
