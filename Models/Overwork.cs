@@ -14,5 +14,6 @@ namespace _66bitProject.Models
         public bool? Status { get; set; }//одобрено \ не одобрено
         public string Description { get; set; }//комментарий
         public DateTime Date { get; set; }//когда переработал
+        public int CalculatedPayment { get; set; }
     }
 }

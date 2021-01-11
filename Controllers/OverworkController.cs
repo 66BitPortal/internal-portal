@@ -84,7 +84,8 @@ namespace _66bitProject.Controllers
                 HoursCount = model.HoursCount,
                 Date = DateTime.Today,
                 Project = project,
-                Person = person
+                Person = person,
+                CalculatedPayment = person.HourPayment * 2 * model.HoursCount
             };
             db.Overworks.Add(newOverwork);
             await db.SaveChangesAsync();

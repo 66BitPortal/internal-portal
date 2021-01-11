@@ -14,7 +14,7 @@
                 }
                 else if ((bool)e.Status)
                 {
-                    <td>"Одобрено: " + @(e.HoursCount * (e.Person.HourPayment * 2))</td>
+                    <td>"Одобрено: " + @e.CalculatedPayment</td>
                 }
                 else
                 {

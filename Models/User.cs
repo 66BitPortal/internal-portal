@@ -15,6 +15,7 @@ namespace _66bitProject.Models
         public int HourPayment { get; set; }
         public DateTime PaymentDay { get; set; }
         public int NumberOfPayments { get; set; }
+        public int MothlyPayment { get; set; }
         public ICollection<EmployeeRevenue> Revenues { get; set; } = new List<EmployeeRevenue>();
         public ICollection<Overwork> Overworks { get; set; } = new List<Overwork>();
         public ICollection<EmployeeCost> Costs { get; set; } = new List<EmployeeCost>();
