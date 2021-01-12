@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using _66bitProject.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace _66bitProject.Models
@@ -20,6 +21,7 @@ namespace _66bitProject.Models
         public ICollection<Overwork> Overworks { get; set; } = new List<Overwork>();
         public ICollection<EmployeeCost> Costs { get; set; } = new List<EmployeeCost>();
         public ICollection<EmployeeProject> Projects { get; set; } = new List<EmployeeProject>();
+        public ICollection<Bonus> Bonuses { get; set; } = new List<Bonus>();
 
         #endregion
 

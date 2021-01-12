@@ -104,6 +104,8 @@ namespace _66bitProject.Controllers
             if (project != null)
             {
                 var employeeProjects = Context.EmployeeProjects.Where(ep => ep.ProjectId == projectId);
+                var overworks = Context.Overworks.Where(o => o.Project.Id == projectId);
+                Context.RemoveRange(overworks);
                 Context.EmployeeProjects.RemoveRange(employeeProjects);
                 Context.Projects.Remove(project.Result);
                 var test = await Context.SaveChangesAsync();

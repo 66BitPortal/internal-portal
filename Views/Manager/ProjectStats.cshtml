@@ -1,0 +1,14 @@
+﻿@model _66bitProject.Models.Project
+
+<h1>@Model.Name</h1>
+<div>
+    <h2>Разработчики</h2>
+    <table>
+        @foreach (var ep in Model.Employees)
+        {
+            <tr>
+                <td>@ep.Employee.FullName</td>
+            </tr>
+        }
+    </table>
+</div>

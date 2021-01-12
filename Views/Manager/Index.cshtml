@@ -1,4 +1,13 @@
-﻿@model IEnumerable<_66bitProject.Models.User>
+﻿@model _66bitProject.Models.User
+
+<div>
+    <h3>Зарплата сотрудника</h3>
+    <p>@Model.MothlyPayment</p>
+</div>
+<div>
+    <h3>Дополнительные начисления сотрудника</h3>
+    <p>@ViewBag.Costs</p>
+</div>
 
 <form method="post" asp-controller="Manager" asp-action="ManagerOwnCosts">
     <input type="submit" value="Просмотреть и добавить собственные расходы" />
@@ -12,3 +21,16 @@
 <form method="post" asp-controller="Manager" asp-action="ManagerOwnOverworks">
     <input type="submit" value="Просмотреть и добавить собственные переработки" />
 </form>
+
+<div>
+    <h4>Ваши проекты: @ViewBag.Projects.Count</h4>
+    <table>
+        @foreach (var project in ViewBag.Projects)
+        {
+            <tr>
+                <td>@project.Name</td>
+                <td><a class="btn btn-sm btn-primary" asp-action="ProjectStats" asp-route-projectId="@project.Id">Сотрудники</a></td>
+            </tr>
+        }
+    </table>
+</div>

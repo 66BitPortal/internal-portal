@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using _66bitProject.Models;
+using _66bitProject.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,11 @@ namespace _66bitProject.Data
             builder.Entity<User>(entity =>
             {
                 entity.ToTable(name: "Users");
+            });
+
+            builder.Entity<Bonus>(entity =>
+            {
+                entity.ToTable(name: "Bonuses");
             });
 
             builder.Entity<EmployeeProject>()

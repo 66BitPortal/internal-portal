@@ -44,7 +44,8 @@ namespace _66bitProject.Controllers
                     NumberOfPayments = model.PaymentFrequency,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
-                    UserName = model.Email
+                    UserName = model.Email,
+                    MothlyPayment = model.MonthlyPayment
             };
                 //Для пароля нужно написать верификатор, пока что для тестов сделал так
                 if (String.IsNullOrEmpty(model.Password))
@@ -92,6 +93,7 @@ namespace _66bitProject.Controllers
                     user.PaymentDay = model.PaymentDate;
                     user.PhoneNumber = model.PhoneNumber;
                     user.UserName = model.Email;
+                    user.MothlyPayment = model.MonthlyPayment;
                     var oldRoles = await userManager.GetRolesAsync(user);
                     //Защита от снятия админом роли с самого себя, плохой код, но идей пока нет
                     if (!oldRoles.Contains("admin") && (role != "admin"))
@@ -140,6 +142,7 @@ namespace _66bitProject.Controllers
                     PaymentFrequency = user.NumberOfPayments,
                     HourPayment = user.HourPayment,
                     PhoneNumber = user.PhoneNumber,
+                    MonthlyPayment = user.MothlyPayment
                 };
                 return View(model);
             }

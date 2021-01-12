@@ -1,4 +1,12 @@
-﻿@model IEnumerable<_66bitProject.Models.User>
+﻿@model _66bitProject.Models.User
+
+<div><h3>Зарплата сотрудника</h3>
+    <p>@Model.MothlyPayment</p>
+</div>
+<div>
+    <h3>Дополнительные начисления сотрудника</h3>
+    <p>@ViewBag.Costs</p>
+</div>
 
 <form method="post" asp-controller="Programmer" asp-action="EmployeeOwnCosts">
     <input type="submit" value="Расходы" />

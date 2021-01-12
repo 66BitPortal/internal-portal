@@ -23,6 +23,8 @@ namespace _66bitProject.Models.ViewModels
         public int HourPayment { get; set; }
         [Required]
         public DateTime PaymentDate { get; set; }
+        [Required]
+        public int MonthlyPayment { get; set; }
         //Сделать ограничение на размер (одна/две? или больше?)
         [Required]
         public int PaymentFrequency { get; set; }

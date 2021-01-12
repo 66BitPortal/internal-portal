@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using _66bitProject.Data;
@@ -9,9 +10,10 @@ using _66bitProject.Data;
 namespace _66bitProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210112062100_BonusTableNameChange")]
+    partial class BonusTableNameChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -394,9 +396,6 @@ namespace _66bitProject.Migrations
 
                     b.Property<int>("Value")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
