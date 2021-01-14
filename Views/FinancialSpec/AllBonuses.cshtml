@@ -1,0 +1,21 @@
+﻿@model _66bitProject.Models.ViewModels.EmployeeBonusesViewModel
+
+<div>
+    <h3>Итого за месяц</h3>
+    <p>@ViewBag.BonusesSum</p>
+</div>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <tr><td>ФИО сотрудника</td><td>Премиальные</td></tr>
+        @foreach (var user in Model.Employees)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@Model.BonusesSums[user.Id]</td>
+                <td><form method="get" asp-action="CreateBonusForEmployee"><button type="submit" name="userId" value="@user.Id">Добавить премию</button></form></td>
+            </tr>
+        }
+    </table>
+</div>

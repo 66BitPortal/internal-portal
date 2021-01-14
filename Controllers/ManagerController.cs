@@ -39,12 +39,12 @@ namespace _66bitProject.Controllers
             return View();
         }
 
-        [Authorize(Roles = "manager")]
-        public IActionResult ManagerDisplayEmployeeCosts()
-        {
-            var costs = context.EmployeeCosts.ToList();
-            return View(costs);
-        }
+        //[Authorize(Roles = "manager")]
+        //public IActionResult ManagerDisplayEmployeeCosts()
+        //{
+        //    var costs = context.EmployeeCosts.ToList();
+        //    return View(costs);
+        //}
 
         [Authorize(Roles = "manager")]
         public IActionResult ManagerOwnOverworks()

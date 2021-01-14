@@ -1,0 +1,27 @@
+﻿@model IEnumerable<_66bitProject.Models.User>
+
+<div>
+    <h3>Итого за месяц</h3>
+    <p>@ViewBag.TotalForMonth р</p>
+</div>
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            <td>@ViewBag.BonusesTotal р</td>
+            <td><form asp-controller="FinancialSpec" asp-action="DisplayAllEmployeeBonuses" method="get"><button type="submit" class="btn btn-sm">Премии сотрудников</button></form></td>
+        </tr>
+        <tr>
+            <td>@ViewBag.TotalRevs р</td>
+            <td><form asp-controller="FinancialSpec" asp-action="ShowRevenuesList" method="get"><button type="submit" class="btn btn-sm">Зарплаты</button></form></td>
+        </tr>
+        <tr>
+            <td>@ViewBag.TotalCosts р</td>
+            <td><form asp-controller="FinancialSpec" asp-action="ShowAllCosts" method="get"><button type="submit" class="btn btn-sm">Дополнительные расходы</button></form></td>
+        </tr>
+        <tr>
+            <td>@ViewBag.TotalOverworks р</td>
+            <td><form asp-controller="FinancialSpec" asp-action="ShowAllCosts" method="get"><button type="submit" class="btn btn-sm">Переработки сотрудников</button></form></td>
+        </tr>
+    </table>
+</div>

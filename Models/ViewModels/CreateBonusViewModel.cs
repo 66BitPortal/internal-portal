@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace _66bitProject.Models.ViewModels
 {
-    public class Bonus
+    public class CreateBonusViewModel
     {
-        [Key]
-        public int Id { get; set; }
-        public User Employee { get; set; }
+        public int UserId { get; set; }
+        public string FullName { get; set; }
+        [Required]
         public int Value { get; set; }
+        [Required]
         public string Commentary { get; set; }
-        public DateTime Date { get; set; }
     }
 }

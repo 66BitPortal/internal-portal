@@ -1,0 +1,20 @@
+﻿@model IEnumerable<_66bitProject.Models.User>
+
+<div>
+    <h3>Итого за месяц</h3>
+    <p>@ViewBag.TotalRev</p>
+</div>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <tr><td>ФИО сотрудника</td><td>Зарплата</td></tr>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.MothlyPayment</td>
+            </tr>
+        }
+    </table>
+</div>

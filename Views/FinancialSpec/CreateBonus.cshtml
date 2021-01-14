@@ -1,0 +1,21 @@
+﻿@model _66bitProject.Models.ViewModels.CreateBonusViewModel
+
+<form asp-action="CreateBonusForEmployee" asp-controller="FinancialSpec" asp-antiforgery="true" method="post">
+    <div>
+        <label>@Model.FullName</label>
+    </div>
+    <div>
+        <label asp-for="Value"></label>
+        <input type="number" asp-for="Value" />
+    </div>
+    <div>
+        <label asp-for="Commentary"></label>
+        <input type="text" asp-for="Commentary" />
+    </div>
+    <div>
+        <input type="hidden" asp-for="UserId" value="@Model.UserId"/>
+    </div>
+    <div>
+        <input type="submit" value="Добавить"/>
+    </div>
+</form>

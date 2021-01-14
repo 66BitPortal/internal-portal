@@ -1,0 +1,15 @@
+﻿@model IEnumerable<_66bitProject.Models.Overwork>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <tr><td></td></tr>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Person.FullName</td>
+                <td><form asp-controller="FinancialSpec" asp-action="ShowOverworkInfo" method="get"><button type="submit" name="id" value="@e.Id">@e.CalculatedPayment</button></form></td>
+            </tr>
+        }
+    </table>
+</div>

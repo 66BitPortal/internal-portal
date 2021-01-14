@@ -1,0 +1,16 @@
+﻿@model IEnumerable<_66bitProject.Models.EmployeeCost>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <tr><td></td></tr>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Employee.FullName</td>
+                <td>@e.Category</td>
+                <td><form asp-controller="FinancialSpec" asp-action="ShowCostInfo" method="get"><button type="submit" name="id" value="@e.Id">@e.Value</button></form></td>
+            </tr>
+        }
+    </table>
+</div>

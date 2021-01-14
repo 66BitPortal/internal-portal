@@ -28,7 +28,7 @@ namespace _66bitProject.Models
         /// <summary>
         /// Список ролей пользователя
         /// </summary>
-        public virtual ICollection<IdentityRole<int>> Roles { get; set; }
+        public ICollection<IdentityRole<int>> Roles { get; set; } = new List<IdentityRole<int>>();
 
         /// <summary>
         /// Список разрешений пользователя

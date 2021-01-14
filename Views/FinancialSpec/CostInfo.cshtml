@@ -1,0 +1,36 @@
+﻿@model _66bitProject.Models.ViewModels.CostInfoViewModel
+
+
+<text>ФИО</text>
+<br />
+<text>@Model.EmployeeFullName</text>
+<br />
+<br />
+<text>Название</text>
+<br />
+<text>@Model.Name</text>
+<br />
+<br />
+<text>Описание</text>
+<br />
+<text>@Model.Description</text>
+<br />
+<br />
+<text>Категория</text>
+<br />
+<text>@Model.Category</text>
+<br />
+<br />
+<text>Сумма</text>
+<br />
+<text>@Model.Value</text>
+<br />
+<br />
+<text>Дата</text>
+<br />
+<text>@Model.Date</text>
+<br />
+
+<div>
+    <form asp-controller="FinancialSpec" asp-action="ShowAllCosts" method="get"><button type="submit">Закрыть</button></form>
+</div>

@@ -1,0 +1,22 @@
+﻿@model _66bitProject.Models.ViewModels.OverworkInfoViewModel
+
+
+<text>ФИО</text>
+<br />
+<text>@Model.EmployeeFullName</text>
+<br />
+<br />
+<text>Описание</text>
+<br />
+<text>@Model.Description</text>
+<br />
+<br />
+<text>Время и сумма</text>
+<br />
+<text>@Model.HoursCount часа + @Model.CalculatedValue р</text>
+<br />
+<br />
+
+<div>
+    <form asp-controller="FinancialSpec" asp-action="ShowAllOverworks" method="get"><button type="submit">Закрыть</button></form>
+</div>
