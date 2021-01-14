@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace _66bitProject.Migrations
 {
-    public partial class RelationsUpdatedV2 : Migration
+    public partial class UpdatedRelationsForTests : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,7 +46,8 @@ namespace _66bitProject.Migrations
                     BirthDate = table.Column<DateTime>(nullable: false),
                     HourPayment = table.Column<int>(nullable: false),
                     PaymentDay = table.Column<DateTime>(nullable: false),
-                    NumberOfPayments = table.Column<int>(nullable: false)
+                    NumberOfPayments = table.Column<int>(nullable: false),
+                    MothlyPayment = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,6 +145,28 @@ namespace _66bitProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bonuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EmployeeId = table.Column<int>(nullable: true),
+                    Value = table.Column<int>(nullable: false),
+                    Commentary = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bonuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bonuses_Users_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeCosts",
                 columns: table => new
                 {
@@ -225,9 +248,10 @@ namespace _66bitProject.Migrations
                     PersonId = table.Column<int>(nullable: true),
                     ProjectId = table.Column<int>(nullable: true),
                     HoursCount = table.Column<int>(nullable: false),
-                    Status = table.Column<bool>(nullable: false),
+                    Status = table.Column<bool>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false)
+                    Date = table.Column<DateTime>(nullable: false),
+                    CalculatedPayment = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -328,6 +352,11 @@ namespace _66bitProject.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bonuses_EmployeeId",
+                table: "Bonuses",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeCosts_EmployeeId",
                 table: "EmployeeCosts",
                 column: "EmployeeId");
@@ -380,6 +409,9 @@ namespace _66bitProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Bonuses");
 
             migrationBuilder.DropTable(
                 name: "EmployeeCosts");

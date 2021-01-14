@@ -12,7 +12,7 @@ namespace _66bitProject
     {
         public static async Task Initialize(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
         {
-            string adminMail = "AdminTest@gmail.com";
+            string adminMail = "admin@gmail.com";
             string adminPass = "12345";
 
             if (await roleManager.FindByNameAsync("admin") == null)
@@ -45,7 +45,8 @@ namespace _66bitProject
                     PhoneNumber = "+79089256384",
                     BirthDate = new System.DateTime(1990, 5, 20),
                     PaymentDay = new System.DateTime(2021, 1, 25),
-                    HourPayment = 500
+                    HourPayment = 500,
+                    MothlyPayment = 20000
                 };
                 IdentityResult result = await userManager.CreateAsync(admin, adminPass);
                 if (result.Succeeded)

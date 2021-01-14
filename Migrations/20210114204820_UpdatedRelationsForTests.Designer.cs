@@ -10,8 +10,8 @@ using _66bitProject.Data;
 namespace _66bitProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210106174145_RelationsUpdatedV2")]
-    partial class RelationsUpdatedV2
+    [Migration("20210114204820_UpdatedRelationsForTests")]
+    partial class UpdatedRelationsForTests
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -249,6 +249,9 @@ namespace _66bitProject.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("CalculatedPayment")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
@@ -264,7 +267,7 @@ namespace _66bitProject.Migrations
                     b.Property<int?>("ProjectId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
@@ -330,6 +333,9 @@ namespace _66bitProject.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("MothlyPayment")
+                        .HasColumnType("integer");
+
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
@@ -373,6 +379,32 @@ namespace _66bitProject.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("_66bitProject.Models.ViewModels.Bonus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Commentary")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Bonuses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -477,6 +509,13 @@ namespace _66bitProject.Migrations
                     b.HasOne("_66bitProject.Models.Project", "Project")
                         .WithMany("Overworks")
                         .HasForeignKey("ProjectId");
+                });
+
+            modelBuilder.Entity("_66bitProject.Models.ViewModels.Bonus", b =>
+                {
+                    b.HasOne("_66bitProject.Models.User", "Employee")
+                        .WithMany("Bonuses")
+                        .HasForeignKey("EmployeeId");
                 });
 #pragma warning restore 612, 618
         }
