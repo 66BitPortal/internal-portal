@@ -69,17 +69,17 @@ namespace _66bitProject.Controllers
         //}
 
         [Authorize(Roles = "manager")]
-        public IActionResult AllEmpCosts()
+        public async Task<IActionResult> AllEmpCosts()
         {
-            var costs = db.EmployeeCosts.Include(ec => ec.Employee).ToList();
+            var costs = await db.EmployeeCosts.Include(ec => ec.Employee).ToListAsync();
             return View(costs);
         }
 
         [Authorize(Roles = "manager")]
         [HttpGet]
-        public IActionResult ChangeCostStatus(int id)
+        public async Task<IActionResult> ChangeCostStatus(int id)
         {
-            var cost = db.EmployeeCosts.Include(ec => ec.Employee).Where(ec => ec.Id == id).Single();
+            var cost = await db.EmployeeCosts.Include(ec => ec.Employee).Where(ec => ec.Id == id).SingleAsync();
             return View(cost);
         }
 

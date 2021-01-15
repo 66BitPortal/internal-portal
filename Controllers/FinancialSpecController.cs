@@ -33,10 +33,13 @@ namespace _66bitProject.Controllers
         }
 
         [Authorize(Roles = "financialSpec")]
-        public IActionResult DisplayAllEmployeesRevenues()
+        [HttpGet]
+        public async Task<IActionResult> DisplayAllEmployeesRevenues()
         {
-            var users = context.Users.ToList();
-            return View("AllRevenues", users);
+            var users = await userManager.Users.ToListAsync();
+            var filteredUsers = users.Where(u => !userManager.GetRolesAsync(u).Result.Contains("admin")).ToList();
+            ViewBag.TotalRev = filteredUsers.Sum(u => u.MothlyPayment);
+            return View("RevenuesList", filteredUsers);
         }
 
         [Authorize(Roles = "financialSpec")]
@@ -46,9 +49,7 @@ namespace _66bitProject.Controllers
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
             var model = new EmployeeBonusesViewModel();
             var adminRole = await roleManager.Roles.SingleAsync(r => r.Name.Equals("admin"));
-            var test = userManager.Users.Include(u => u.Bonuses).Include(u => u.Roles);
-            var test1 = context.UserRoles.ToList();
-            var filteredUsers = userManager.Users.Include(u => u.Bonuses).ToList();
+            var filteredUsers = await userManager.Users.Include(u => u.Bonuses).ToListAsync();
             filteredUsers = filteredUsers.Where(u => !userManager.GetRolesAsync(u).Result.Contains("admin") && u.Id != currentUser.Id).ToList();
             var currentMonthSumsPerUser = new Dictionary<int, int>();
             foreach (var user in filteredUsers)
@@ -118,14 +119,14 @@ namespace _66bitProject.Controllers
             return View("AllCosts", costs);
         }
 
-        [Authorize(Roles = "financialSpec")]
-        [HttpGet]
-        public IActionResult ShowRevenuesList()
-        {
-            var users = userManager.Users.ToList();
-            ViewBag.TotalRev = users.Sum(u => u.MothlyPayment);
-            return View("RevenuesList", users);
-        }
+        //[Authorize(Roles = "financialSpec")]
+        //[HttpGet]
+        //public async Task<IActionResult> ShowRevenuesList()
+        //{
+        //    var users = await userManager.Users.Where(u => !userManager.GetRolesAsync(u).Result.Contains("admin")).ToListAsync();
+        //    ViewBag.TotalRev = users.Sum(u => u.MothlyPayment);
+        //    return View("RevenuesList", users);
+        //}
 
         [Authorize(Roles = "financialSpec")]
         [HttpGet]

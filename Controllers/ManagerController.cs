@@ -23,13 +23,12 @@ namespace _66bitProject.Controllers
         }
 
         [Authorize(Roles = "manager")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var userId = userManager.GetUserAsync(HttpContext.User).Result.Id;
-            var test = context.Users.Include(u => u.Costs).Include(u => u.Projects);
-            var currentUser = context.Users.Include(u => u.Costs).Where(u => u.Id == userId).Single();
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await context.Users.Include(u => u.Costs).Where(u => u.Id == user.Id).SingleAsync();
             ViewBag.Costs = currentUser.Costs.Where(c => c.Status ?? false).Sum(c => c.Value);
-            ViewBag.Projects = context.Projects.Where(p => p.ManagerId == userId).ToList();
+            ViewBag.Projects = await context.Projects.Where(p => p.ManagerId == user.Id).ToListAsync();
             return View(currentUser);
         }
 

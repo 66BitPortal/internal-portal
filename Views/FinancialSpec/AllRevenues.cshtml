@@ -14,7 +14,7 @@
             <tr>
                 <td>@user.FullName</td>
                 <td>@user.MothlyPayment</td>
-                <td><button type="submit" class="btn btn-sm btn-danger" value="@user.Id">Добавить премию</button></td>
+                <td><form method="get" asp-action="CreateBonusForEmployee"><button type="submit" name="userId" value="@user.Id">Добавить премию</button></form></td>
             </tr>
         }
     </table>

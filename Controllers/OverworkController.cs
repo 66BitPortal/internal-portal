@@ -23,7 +23,7 @@ namespace _66bitProject.Controllers
             return user.Id;
         }
 
-        private Task<User> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
+        private async Task<User> GetCurrentUserAsync() => await userManager.GetUserAsync(HttpContext.User);
 
         public OverworkController(ApplicationDbContext context, UserManager<User> userManager)
         {
@@ -48,9 +48,9 @@ namespace _66bitProject.Controllers
 
         [Authorize(Roles = "manager")]
         [HttpGet]
-        public IActionResult ChangeStatus(int? id)
+        public async Task<IActionResult> ChangeStatus(int? id)
         {
-            var overwork = db.Overworks.Include(o => o.Person).Where(o => o.Id == id).Single();
+            var overwork = await db.Overworks.Include(o => o.Person).Where(o => o.Id == id).SingleAsync();
             return View(overwork);
         }
 
@@ -65,9 +65,9 @@ namespace _66bitProject.Controllers
 
         [Authorize(Roles = "employee, manager")]
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Projects = db.Projects.ToList();
+            ViewBag.Projects = await db.Projects.ToListAsync();
             CreateOverworkViewModel model = new CreateOverworkViewModel();
             return View(model);
         }
@@ -76,7 +76,7 @@ namespace _66bitProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateOverworkViewModel model)
         {
-            var project = db.Projects.Where(p => p.Id == model.ProjectId).Single();
+            var project = await db.Projects.Where(p => p.Id == model.ProjectId).SingleAsync();
             var personId = GetCurrentUserId().Result;
             var person = await db.Users.FindAsync(personId);
             var newOverwork = new Overwork() {
@@ -87,7 +87,7 @@ namespace _66bitProject.Controllers
                 Person = person,
                 CalculatedPayment = person.HourPayment * 2 * model.HoursCount
             };
-            db.Overworks.Add(newOverwork);
+            await db.Overworks.AddAsync(newOverwork);
             await db.SaveChangesAsync();
             return RedirectToAction("ShowOwnOverworks");
         }

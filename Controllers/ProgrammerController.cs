@@ -24,10 +24,10 @@ namespace _66bitProject.Controllers
 
         [Authorize(Roles = "employee")]
         //Все вычисления и вызовы к ним проводить здесь, готовые резы посылаем на индекс
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var userId = userManager.GetUserAsync(HttpContext.User).Result.Id;
-            var currentUser = context.Users.Include(u => u.Costs).Where(u => u.Id == userId).Single();
+            var currentUser = await context.Users.Include(u => u.Costs).Where(u => u.Id == userId).SingleAsync();
             ViewBag.Costs = currentUser.Costs.Where(c => c.Status ?? false).Sum(c => c.Value);
             return View(currentUser);
         }
