@@ -2,6 +2,8 @@
 
 <h1>@Model.Name</h1>
 <div>
+    <h2>Менеджер </h2>
+    <p>@ViewBag.ManagerFullName</p>
     <h2>Разработчики</h2>
     <table>
         @foreach (var ep in Model.Employees)
@@ -11,4 +13,8 @@
             </tr>
         }
     </table>
+</div>
+
+<div>
+    <form asp-action="ShowAllProjects" method="get"><button type="submit">Закрыть</button></form>
 </div>

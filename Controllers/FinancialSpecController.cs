@@ -169,6 +169,30 @@ namespace _66bitProject.Controllers
             return View("OverworkInfo", model);
         }
 
-        //public IActionResult
+        [Authorize(Roles = "financialSpec")]
+        [HttpGet]
+        public async Task<IActionResult> ShowAllProjects()
+        {
+            var projects = await context.Projects.ToListAsync();
+            var managersNames = new Dictionary<int, string>();
+            var users = await context.Users.ToListAsync();
+            var managers = users.Where(u => userManager.IsInRoleAsync(u, "manager").Result).ToList();
+            foreach (var manager in managers)
+            {
+                managersNames.Add(manager.Id, manager.FullName);
+            }
+            ViewBag.Managers = managersNames;
+            return View("AllProjects", projects);
+        }
+
+        [Authorize(Roles = "financialSpec")]
+        [HttpGet]
+        public async Task<IActionResult> ShowProjectInfo(int projectId)
+        {
+            var project = await context.Projects.Include(p => p.Employees).ThenInclude(ep => ep.Employee)
+                .Where(p => p.Id == projectId).SingleAsync();
+            ViewBag.ManagerFullName = context.Users.FindAsync(project.ManagerId).Result.FullName;
+            return View("ProjectInfo", project);
+        }
     }
 }

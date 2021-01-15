@@ -1,0 +1,16 @@
+﻿@model IEnumerable<_66bitProject.Models.Project>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <tr><td>Название проекта</td><td>Менеджер</td><td>Сотрудники</td></tr>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Name</td>
+                <td>@ViewBag.Managers[e.ManagerId]</td>
+                <td><form method="get" asp-action="ShowProjectInfo"><button value="@e.Id" name="projectId">Сотрудники</button></form></td>
+            </tr>
+        }
+    </table>
+</div>
