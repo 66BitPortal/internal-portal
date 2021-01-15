@@ -24,6 +24,8 @@ namespace _66bitProject.Models.ViewModels
         [Required]
         public int MonthlyPayment { get; set; }
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd}")]
         public DateTime PaymentDate { get; set; }
         //Сделать ограничение на размер (одна/две? или больше?)
         [Required]

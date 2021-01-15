@@ -30,7 +30,7 @@
     </div>
     <div class="form-group">
         <label asp-for="PaymentDate" class="control-label">Дата выплаты зарплаты</label>
-        <input type="date" asp-for="PaymentDate" class="form-control" />
+        <input type="date" asp-for="PaymentDate" class="form-control" asp-format="{0:MM/dd}" />
     </div>
     <div class="form-group">
         <label asp-for="HourPayment" class="control-label">Размер почасовой оплаты</label>
@@ -48,9 +48,8 @@
     <div class="form-group">
         @foreach (IdentityRole<int> role in @Model.AllRoles)
         {
-            <input type="radio" name="role" value="@role.Name"
-                   @(Model.Roles.Contains(role) ? "checked=\"checked\"" : "") />@role.Name <br />
-            }
+            <input type="radio" name="role" value="@role.Name" @(role.Name == "employee" ? "checked=\"checked\"" : "")/>@role.Name <br />
+         }
     </div>
     <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>

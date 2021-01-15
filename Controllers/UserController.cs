@@ -69,10 +69,10 @@ namespace _66bitProject.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var model = new CreateUserViewModel();
-            model.AllRoles = roleManager.Roles.ToList();
+            model.AllRoles = await roleManager.Roles.ToListAsync();
             return View(model);
         }
 
@@ -127,7 +127,7 @@ namespace _66bitProject.Controllers
             User user = await userManager.Users.Include(u => u.Roles)
                 .SingleAsync(u => u.Id == id);
             var userRoles = await userManager.GetRolesAsync(user);
-            var roles = roleManager.Roles.ToList();
+            var roles = await roleManager.Roles.ToListAsync();
             if (user != null)
             {
                 EditUserViewModel model = new EditUserViewModel

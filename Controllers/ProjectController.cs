@@ -24,9 +24,10 @@ namespace _66bitProject.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(Context.Projects.ToList());
+            var projects = await Context.Projects.ToListAsync();
+            return View(projects);
         }
 
         [Authorize(Roles = "admin")]
@@ -63,7 +64,7 @@ namespace _66bitProject.Controllers
         public async Task<IActionResult> Edit(int projectId)
         {
             var model = new EditProjectViewModel();
-            var project = Context.Projects.Include(e => e.Employees).Where(p => p.Id == projectId).Single();
+            var project = await Context.Projects.Include(e => e.Employees).Where(p => p.Id == projectId).SingleAsync();
             var employees = await userManager.GetUsersInRoleAsync("employee");
             var manager = await userManager.GetUsersInRoleAsync("manager");
             model.AllDevelopers = employees;
@@ -78,10 +79,10 @@ namespace _66bitProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditProjectViewModel model)
         {
-            var project = Context.Projects.Include(p => p.Employees).Where(p => p.Id == model.ProjectId).Single();
+            var project = await Context.Projects.Include(p => p.Employees).Where(p => p.Id == model.ProjectId).SingleAsync();
             if (project != null)
             {
-                var employeeProjects = Context.EmployeeProjects.Where(ep => ep.ProjectId == model.ProjectId);
+                var employeeProjects = Context.EmployeeProjects.FindAsync(model.ProjectId).Result;
                 Context.EmployeeProjects.RemoveRange(employeeProjects);
                 foreach (var dev in model.DevelopersId)
                 {
@@ -100,14 +101,14 @@ namespace _66bitProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int projectId)
         {
-            var project = Context.Projects.FindAsync(projectId);
+            var project = await Context.Projects.FindAsync(projectId);
             if (project != null)
             {
                 var employeeProjects = Context.EmployeeProjects.Where(ep => ep.ProjectId == projectId);
                 var overworks = Context.Overworks.Where(o => o.Project.Id == projectId);
                 Context.RemoveRange(overworks);
                 Context.EmployeeProjects.RemoveRange(employeeProjects);
-                Context.Projects.Remove(project.Result);
+                Context.Projects.Remove(project);
                 var test = await Context.SaveChangesAsync();
             }
             return RedirectToAction("Index");

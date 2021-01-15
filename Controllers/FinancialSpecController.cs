@@ -53,7 +53,7 @@ namespace _66bitProject.Controllers
             var currentMonthSumsPerUser = new Dictionary<int, int>();
             foreach (var user in filteredUsers)
             {
-                var filteredBonuses = user.Bonuses.Where(b => b.Date.Month == DateTime.Now.Month && b.Date.Year == DateTime.Now.Year);
+                var filteredBonuses = user.Bonuses.Where(b => b.Date.Month == DateTime.Now.Month);
                 currentMonthSumsPerUser.Add(user.Id, filteredBonuses.Sum(b => b.Value));
             }
             model.BonusesSums = currentMonthSumsPerUser;
@@ -97,15 +97,13 @@ namespace _66bitProject.Controllers
             var users = userManager.Users.Include(u => u.Bonuses).Include(u => u.Revenues).
                 Include(u => u.Costs).Include(u => u.Overworks);
             ViewBag.BonusesTotal = users.SelectMany(u => u.Bonuses).
-                Where(b => b.Date.Month == DateTime.Now.Month && b.Date.Year == DateTime.Now.Year)
+                Where(b => b.Date.Month == DateTime.Now.Month)
                 .Sum(b => b.Value);
             ViewBag.TotalRevs = users.Sum(u => u.MothlyPayment);
             ViewBag.TotalCosts = users.SelectMany(u => u.Costs).Where(ec => ec.Status ?? false
-            && ec.Date.Month == DateTime.Now.Month
-            && ec.Date.Year == DateTime.Now.Year)
+            && ec.Date.Month == DateTime.Now.Month)
                 .Sum(c => c.Value);
             ViewBag.TotalOverworks = users.SelectMany(u => u.Overworks).Where(o => o.Status ?? false
-            && o.Date.Year == DateTime.Now.Year
             && o.Date.Month == DateTime.Now.Month)
                 .Sum(o => o.CalculatedPayment);
             ViewBag.TotalForMonth = ViewBag.BonusesTotal + ViewBag.TotalCosts + ViewBag.TotalRevs + ViewBag.TotalOverworks;
