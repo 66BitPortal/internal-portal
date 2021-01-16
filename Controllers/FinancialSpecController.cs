@@ -150,7 +150,7 @@ namespace _66bitProject.Controllers
         public IActionResult ShowAllOverworks()
         {
             var overworks = context.Overworks.Include(o => o.Person).Where(o => o.Status ?? false).ToList();
-            return View(overworks);
+            return View("AllOverworks", overworks);
         }
 
         [Authorize(Roles = "financialSpec")]

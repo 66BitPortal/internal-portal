@@ -1,8 +1,12 @@
 ﻿@model IEnumerable<_66bitProject.Models.User>
 
-<form method="post" asp-controller="EmployeeCost" asp-action="ShowOwnCosts">
+<form method="get" asp-controller="EmployeeCost" asp-action="ShowOwnCosts">
     <input type="submit" value="Просмотреть расходы" />
 </form>
 <form method="get" asp-controller="EmployeeCost" asp-action="Create">
     <input type="submit" value="Добавить расходы" />
 </form>
+
+<div>
+    <form asp-action="Index" method="get"><button type="submit">Закрыть</button></form>
+</div>

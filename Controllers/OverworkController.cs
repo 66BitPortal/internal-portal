@@ -54,7 +54,8 @@ namespace _66bitProject.Controllers
             return View(overwork);
         }
 
-        
+        [Authorize(Roles = "manager")]
+        [HttpPost]
         public async Task<IActionResult> ChangeStatus(int id, bool status)
         {
             var overwork = await db.Overworks.FindAsync(id);

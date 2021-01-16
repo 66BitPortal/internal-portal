@@ -1,8 +1,12 @@
 ﻿@model IEnumerable<_66bitProject.Models.User>
 
-<form method="post" asp-controller="Overwork" asp-action="ShowOwnOverworks">
+<form method="get" asp-controller="Overwork" asp-action="ShowOwnOverworks">
     <input type="submit" value="Просмотреть статус переработок" />
 </form>
 <form method="get" asp-controller="Overwork" asp-action="Create">
     <input type="submit" value="Добавить переработку" />
 </form>
+
+<div>
+    <form asp-action="Index" method="get"><button type="submit">Закрыть</button></form>
+</div>

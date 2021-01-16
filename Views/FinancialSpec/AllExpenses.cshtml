@@ -13,7 +13,7 @@
         </tr>
         <tr>
             <td>@ViewBag.TotalRevs р</td>
-            <td><form asp-controller="FinancialSpec" asp-action="ShowRevenuesList" method="get"><button type="submit" class="btn btn-sm">Зарплаты</button></form></td>
+            <td><form asp-controller="FinancialSpec" asp-action="DisplayAllEmployeesRevenues" method="get"><button type="submit" class="btn btn-sm">Зарплаты</button></form></td>
         </tr>
         <tr>
             <td>@ViewBag.TotalCosts р</td>
@@ -21,7 +21,8 @@
         </tr>
         <tr>
             <td>@ViewBag.TotalOverworks р</td>
-            <td><form asp-controller="FinancialSpec" asp-action="ShowAllCosts" method="get"><button type="submit" class="btn btn-sm">Переработки сотрудников</button></form></td>
+            <td><form asp-controller="FinancialSpec" asp-action="ShowAllOverworks" method="get"><button type="submit" class="btn btn-sm">Переработки сотрудников</button></form></td>
         </tr>
     </table>
 </div>
+<button onclick='javascript:history.go(-1)'>Назад</button>

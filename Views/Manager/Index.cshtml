@@ -9,16 +9,16 @@
     <p>@ViewBag.Costs</p>
 </div>
 
-<form method="post" asp-controller="Manager" asp-action="ManagerOwnCosts">
+<form method="get" asp-controller="Manager" asp-action="ManagerOwnCosts">
     <input type="submit" value="Просмотреть и добавить собственные расходы" />
 </form>
-<form method="post" asp-controller="EmployeeCost" asp-action="AllEmpCosts">
+<form method="get" asp-controller="EmployeeCost" asp-action="AllEmpCosts">
     <input type="submit" value="Просмотреть расходы сотрудников" />
 </form>
-<form method="post" asp-controller="Overwork" asp-action="AllOverworks">
+<form method="get" asp-controller="Overwork" asp-action="AllOverworks">
     <input type="submit" value="Просмотреть переработки сотрудников" />
 </form>
-<form method="post" asp-controller="Manager" asp-action="ManagerOwnOverworks">
+<form method="get" asp-controller="Manager" asp-action="ManagerOwnOverworks">
     <input type="submit" value="Просмотреть и добавить собственные переработки" />
 </form>
 
